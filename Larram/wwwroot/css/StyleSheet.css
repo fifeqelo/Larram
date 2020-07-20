@@ -1,0 +1,17 @@
+﻿@font-face {
+    font-family: "Quicksand";
+    src: url('Quicksand-VariableFont_wght.ttf');
+}
+@font-face {
+    font-family: "Roboto";
+    src: url('Roboto-Light.ttf');
+}
+.quickSand {
+    font-family: "Quicksand";
+    font-size: 300%;
+}
+.Roboto {
+    font-family: "Roboto";
+    font-size: 125%;
+}
+
