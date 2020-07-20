@@ -1,6 +1,6 @@
 using System;
 
-namespace Larram.Models
+namespace Larram.Models.ViewModels
 {
     public class ErrorViewModel
     {

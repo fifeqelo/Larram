@@ -90,18 +90,28 @@ body {
 .footer-list-element {
     padding: 0.1rem;
 }
-a {
-    text-decoration:none;
+.footer-list a {
+    text-decoration: none;
     color: dimgray;
-    font-size:70%;
+    font-size: 70%;
 }
-a:hover, a:active {
-        text-decoration: none;
-        color: black;
-        font-size: 70%;
+.footer-list a:hover, .footer-list a:active {
+    text-decoration: none;
+    color: black;
+    font-size: 70%;
 }
 .social-media-footer{
     display: inline;
     list-style-type: none;
     padding: 0.1rem;
+}
+.navBar-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top:1rem;
+}
+.navBar-panel p {
+        font-size: 55%;
 }
