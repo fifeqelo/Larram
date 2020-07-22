@@ -1,0 +1,23 @@
+﻿@model Larram.Models.Category
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container text-center">
+    <div class="d-flex justify-content-center">
+        <i style="font-size:64px" class="ml-2 mt-4 mr-4 mb-2" data-feather="alert-triangle"></i>
+        <h2 class="Roboto mt-4" style="font-size:150%;"><b>Czy na pewno chcesz <br /> usunąć tą kategorię?</b></h2>
+    </div>
+    <form asp-action="Delete" class="m-0 p-0">
+        <div class="d-flex justify-content-center">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="text-light button-managment bg-success Roboto ml-4 pt-2 pr-0 mr-3 pl-3 justify-content-end" style="width:15%; padding:0.5rem; height:50%; font-size:100%;">
+                ZATWIERDŹ <i style="font-size:18px" data-feather="check-circle"></i>
+            </button>
+            <button asp-action="Index" class="text-light button-managment bg-danger Roboto ml-0 pt-2 pr-0 mr-0 pl-3 justify-content-end" style="width:15%; padding:0.5rem; height:50%; font-size:100%;">
+                ANULUJ <i style="font-size:18px" class="mb-1" data-feather="x-circle"></i>
+            </button>
+        </div>
+    </form>
+
+</div>

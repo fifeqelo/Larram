@@ -11,10 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Migrations\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Larram.Models\Larram.Models.csproj" />
     <ProjectReference Include="..\Larram.Utility\Larram.Utility.csproj" />
   </ItemGroup>
