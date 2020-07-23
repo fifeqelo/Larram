@@ -9,7 +9,7 @@ namespace Larram.DataAccess.Repository.IRepository
 {
     public interface IRepository<T> where T : class
     {
-        Task<T> Get(int id);
+        Task<T> Get(int? id);
         Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>> filter = null, 
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, 
             string includeProperties = null);

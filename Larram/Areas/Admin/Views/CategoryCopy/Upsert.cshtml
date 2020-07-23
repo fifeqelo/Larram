@@ -1,0 +1,41 @@
+﻿@model Larram.Models.Category
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var title = "NOWA KATEGORIA";
+
+}
+
+    <div class="container text-center Roboto" style="width:20%;">
+        <div class="container d-flex justify-content-end p-0">
+            <a class="text-dark text-right mb-1 mt-2" asp-action="Index"><i style="font-size:22px" data-feather="x"></i></a>
+        </div>
+        @if (Model.Id != 0)
+        {
+            title = "EDYCJA";
+        }
+        <h1 class="m-2" style="font-size:150%;"><b>@title</b></h1>
+        <hr />
+        <form asp-action="Upsert" class="mt-2 p-0">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="container d-flex justify-content-start mt-4">
+                Nazwa:&nbsp;<input asp-for="Name" class="form-control p-1" type="text" style="width:70%; height:70%; border-radius:0;" />
+            </div>
+            <span asp-validation-for="Name" data-val-mes class="text-danger Roboto" style="font-size:80%;"></span>
+            <div class="d-flex justify-content-center mt-3">
+                @if (Model.Id != 0)
+                {
+                    <partial name="_EditAndBackToListButton" model="Model.Id" />
+                }
+                else
+                {
+                    <partial name="_CreateAndBackToListButton" />
+                }
+            </div>
+        </form>
+    </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

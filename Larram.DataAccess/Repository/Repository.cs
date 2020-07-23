@@ -26,7 +26,7 @@ namespace Larram.DataAccess.Repository
             await dbSet.AddAsync(entity);
         }
 
-        public async Task<T> Get(int id)
+        public async Task<T> Get(int? id)
         {
             return await dbSet.FindAsync(id);
         }

@@ -11,7 +11,7 @@ namespace Larram.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "To pole jest wymagane.")]
         [DisplayName("Category Name")]
         [MaxLength(50)]
         public string Name { get; set; }

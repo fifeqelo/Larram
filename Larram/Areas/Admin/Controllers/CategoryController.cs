@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Larram.DataAccess.Data;
 using Larram.DataAccess.Repository.IRepository;
 using Larram.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +15,12 @@ namespace Larram.Areas.Admin.Controllers
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ApplicationDbContext _context;
 
-        public CategoryController(IUnitOfWork unitOfWork)
+        public CategoryController(IUnitOfWork unitOfWork, ApplicationDbContext context)
         {
             _unitOfWork = unitOfWork;
+            _context = context;
         }
 
         public async Task<IActionResult> Index(string orderBy, string search, string currentFilter, int? page)
@@ -49,9 +53,28 @@ namespace Larram.Areas.Admin.Controllers
                     allObj = allObj.OrderByDescending(u => u.Name);
                     break;
             }
-            int pageSize = 5;
+            int pageSize = 10;
             return View(PaginatedList<Category>.Create(allObj, page ?? 1, pageSize));
+            //return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "_ViewAll", (PaginatedList<Category>.Create(allObj, page ?? 1, pageSize)) });
+
         }
+
+        [PopupHelper.NoDirectAccess]
+        public async Task<IActionResult> Details(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            var objDetails = await _unitOfWork.Category.GetFirstOrDefault(d => d.Id == id);
+            if(objDetails == null)
+            {
+                return NotFound();
+            }
+            return View(objDetails);
+        }
+
+        [PopupHelper.NoDirectAccess]
         public async Task<IActionResult> Delete(int? id)
         {
             if(id == null)
@@ -65,6 +88,7 @@ namespace Larram.Areas.Admin.Controllers
             }
             return View(objToDelete);
         }
+
         [HttpPost, ActionName("Delete")] 
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -72,7 +96,63 @@ namespace Larram.Areas.Admin.Controllers
             var objToDelete = await _unitOfWork.Category.GetFirstOrDefault(o => o.Id == id);
             await _unitOfWork.Category.Remove(objToDelete);
             await _unitOfWork.Save();
-            return RedirectToAction(nameof(Index));
+            return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "Index", _unitOfWork.Category.GetAll()) });
+        }
+
+        [PopupHelper.NoDirectAccess]
+        public async Task<IActionResult> Upsert(int? id)
+        {
+            Category category = new Category();
+            if(id == null)
+            {
+                //new category
+                return View(category);
+            }
+           category = await _unitOfWork.Category.Get(id.GetValueOrDefault());
+            if(category == null)
+            { 
+                return NotFound();
+            }
+            //edit category
+            return View(category);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Upsert([Bind("Id, Name")] Category category)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if(category.Id == 0)
+                    {
+                        await _unitOfWork.Category.Add(category);
+                    }
+                    else
+                    {
+                        _unitOfWork.Category.Update(category);
+                    }
+                }
+                catch (DBConcurrencyException)
+                {
+                    if (!CategoryExists(category.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                await _unitOfWork.Save();
+                return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "Index", _unitOfWork.Category.GetAll()) });
+            }
+            return Json(new { isValid = false, html = PopupHelper.RenderRazorViewToString(this, "Upsert", category) });
+        }
+        public bool CategoryExists(int id)
+        {
+            return _context.Categories.Any(u => u.Id == id);
         }
     }
 }
