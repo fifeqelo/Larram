@@ -12,12 +12,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace Larram.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class CategoryController : Controller
+    public class ColorController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ApplicationDbContext _context;
 
-        public CategoryController(IUnitOfWork unitOfWork, ApplicationDbContext context)
+        public ColorController(IUnitOfWork unitOfWork, ApplicationDbContext context)
         {
             _unitOfWork = unitOfWork;
             _context = context;
@@ -39,10 +39,10 @@ namespace Larram.Areas.Admin.Controllers
 
             ViewBag.CurrentFilter = search;
 
-            var allObj = await _unitOfWork.Category.GetAll();
+            var allObj = await _unitOfWork.Color.GetAll();
             if (!String.IsNullOrEmpty(search))
             {
-                allObj = await _unitOfWork.Category.GetAll(filter: u => u.Name.Contains(search));
+                allObj = await _unitOfWork.Color.GetAll(filter: u => u.Name.Contains(search));
             }
             switch (orderBy)
             {
@@ -54,8 +54,8 @@ namespace Larram.Areas.Admin.Controllers
                     break;
             }
             int pageSize = 10;
-            return View(PaginatedList<Category>.Create(allObj, page ?? 1, pageSize));
-            //return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "_ViewAll", (PaginatedList<Category>.Create(allObj, page ?? 1, pageSize)) });
+            return View(PaginatedList<Color>.Create(allObj, page ?? 1, pageSize));
+            //return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "_ViewAll", (PaginatedList<Color>.Create(allObj, page ?? 1, pageSize)) });
 
         }
 
@@ -66,8 +66,8 @@ namespace Larram.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            var objDetails = await _unitOfWork.Category.Get(id);
-            if(objDetails == null)
+            var objDetails = await _unitOfWork.Color.Get(id);
+            if (objDetails == null)
             {
                 return NotFound();
             }
@@ -81,7 +81,7 @@ namespace Larram.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            var objToDelete = await _unitOfWork.Category.Get(id);
+            var objToDelete = await _unitOfWork.Color.Get(id);
             if (objToDelete == null)
             {
                 return NotFound();
@@ -93,50 +93,50 @@ namespace Larram.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var objToDelete = await _unitOfWork.Category.Get(id);
-            await _unitOfWork.Category.Remove(objToDelete);
+            var objToDelete = await _unitOfWork.Color.Get(id);
+            await _unitOfWork.Color.Remove(objToDelete);
             await _unitOfWork.Save();
-            return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "Index", _unitOfWork.Category.GetAll()) });
+            return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "Index", _unitOfWork.Color.GetAll()) });
         }
 
         [PopupHelper.NoDirectAccess]
         public async Task<IActionResult> Upsert(int? id)
         {
-            Category category = new Category();
+            Color color = new Color();
             if(id == null)
             {
-                //new category
-                return View(category);
+                //new color
+                return View(color);
             }
-           category = await _unitOfWork.Category.Get(id.GetValueOrDefault());
-            if(category == null)
+           color = await _unitOfWork.Color.Get(id.GetValueOrDefault());
+            if(color == null)
             { 
                 return NotFound();
             }
-            //edit category
-            return View(category);
+            //edit color
+            return View(color);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert([Bind("Id, Name")] Category category)
+        public async Task<IActionResult> Upsert([Bind("Id, Name, HexValue")] Color color)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if(category.Id == 0)
+                    if(color.Id == 0)
                     {
-                        await _unitOfWork.Category.Add(category);
+                        await _unitOfWork.Color.Add(color);
                     }
                     else
                     {
-                        _unitOfWork.Category.Update(category);
+                        _unitOfWork.Color.Update(color);
                     }
                 }
                 catch (DBConcurrencyException)
                 {
-                    if (!CategoryExists(category.Id))
+                    if (!ColorExists(color.Id))
                     {
                         return NotFound();
                     }
@@ -146,13 +146,13 @@ namespace Larram.Areas.Admin.Controllers
                     }
                 }
                 await _unitOfWork.Save();
-                return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "Index", _unitOfWork.Category.GetAll()) });
+                return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "Index", _unitOfWork.Color.GetAll()) });
             }
-            return Json(new { isValid = false, html = PopupHelper.RenderRazorViewToString(this, "Upsert", category) });
+            return Json(new { isValid = false, html = PopupHelper.RenderRazorViewToString(this, "Upsert", color) });
         }
-        public bool CategoryExists(int id)
+        public bool ColorExists(int id)
         {
-            return _context.Categories.Any(u => u.Id == id);
+            return _context.Colors.Any(u => u.Id == id);
         }
     }
 }

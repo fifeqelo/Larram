@@ -13,6 +13,9 @@ namespace Larram.DataAccess.Repository.IRepository
         Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>> filter = null, 
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, 
             string includeProperties = null);
+        IEnumerable<T> GetAllNotAsync(Expression<Func<T, bool>> filter = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            string includeProperties = null);
         Task<T> GetFirstOrDefault(Expression<Func<T, bool>> filter = null,
             string includeProperties = null);
         Task Add(T entity);

@@ -1,0 +1,57 @@
+﻿@model Larram.Models.ViewModels.ProductViewModel
+@{
+    ViewData["Title"] = "Edit";
+    Layout = null;
+    var title = "NOWY PRODUKT";
+
+}
+
+    <div class="container text-center Roboto" style="width:100%;">
+        <div class="container d-flex justify-content-end p-0">
+            <a class="text-dark text-right mb-1 mt-2" data-dismiss="modal"><i style="font-size:22px" data-feather="x"></i></a>
+        </div>
+        @if (Model.Product.Id != 0)
+        {
+            title = "EDYCJA";
+        }
+        <h1 class="m-2" style="font-size:150%;"><b>@title</b></h1>
+        <hr />
+        <form asp-action="Upsert" onsubmit="return jQueryAjaxPost(this);" class="mt-2 p-0">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Product.Id" />
+            <div class="container d-flex justify-content-start mt-4">
+                Nazwa:&nbsp;<input asp-for="Product.Name" class="form-control p-1" type="text" style="width:70%; height:70%; border-radius:0;" />
+            </div>
+            <span asp-validation-for="Product.Name" class="text-danger Roboto" style="font-size:80%;"></span>
+            <div class="container d-flex justify-content-start mt-4">
+                Opis:&nbsp;<input asp-for="Product.Description" class="form-control p-1" type="text" style="width:70%; height:70%; border-radius:0;" />
+            </div>
+            <div class="container d-flex justify-content-start mt-4">
+                Płeć:&nbsp;
+                @Html.DropDownListFor(m => m.Product.Gender, Model.GenderList, "-Wybierz płeć",
+                new { @class = "form-control" })
+            </div>
+            <span asp-validation-for="Product.Gender" class="text-danger Roboto" style="font-size:80%;"></span>
+            <input type="hidden" asp-for="Product.CreatedDate" value="@DateTime.Now" />
+            <div class="container d-flex justify-content-start mt-4">
+                Kategoria:&nbsp;
+                @Html.DropDownListFor(m => m.Product.CategoryId, Model.CategoryList, "-Wybierz kategorię",
+                new { @class = "form-control" })
+            </div>
+            <span asp-validation-for="Product.CategoryId" class="text-danger Roboto" style="font-size:80%;"></span>
+            <div class="d-flex justify-content-center">
+                @if (Model.Product.Id != 0)
+                {
+                    <partial name="_EditAndBackToListButton" model="Model.Product.Id" />
+                }
+                else
+                {
+                    <partial name="_CreateAndBackToListButton" />
+                }
+            </div>
+        </form>
+    </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

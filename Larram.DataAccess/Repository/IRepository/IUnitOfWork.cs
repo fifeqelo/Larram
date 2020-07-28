@@ -8,6 +8,9 @@ namespace Larram.DataAccess.Repository.IRepository
     public interface IUnitOfWork
     {
         ICategoryRepository Category { get; }
+        ISizeRepository Size { get; }
+        IColorRepository Color { get; }
+        IProductRepository Product { get; }
 
         Task Save();
     }

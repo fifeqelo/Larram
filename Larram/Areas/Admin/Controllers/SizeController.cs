@@ -12,12 +12,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace Larram.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class CategoryController : Controller
+    public class SizeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ApplicationDbContext _context;
 
-        public CategoryController(IUnitOfWork unitOfWork, ApplicationDbContext context)
+        public SizeController(IUnitOfWork unitOfWork, ApplicationDbContext context)
         {
             _unitOfWork = unitOfWork;
             _context = context;
@@ -39,10 +39,10 @@ namespace Larram.Areas.Admin.Controllers
 
             ViewBag.CurrentFilter = search;
 
-            var allObj = await _unitOfWork.Category.GetAll();
+            var allObj = await _unitOfWork.Size.GetAll();
             if (!String.IsNullOrEmpty(search))
             {
-                allObj = await _unitOfWork.Category.GetAll(filter: u => u.Name.Contains(search));
+                allObj = await _unitOfWork.Size.GetAll(filter: u => u.Name.Contains(search));
             }
             switch (orderBy)
             {
@@ -54,7 +54,7 @@ namespace Larram.Areas.Admin.Controllers
                     break;
             }
             int pageSize = 10;
-            return View(PaginatedList<Category>.Create(allObj, page ?? 1, pageSize));
+            return View(PaginatedList<Size>.Create(allObj, page ?? 1, pageSize));
             //return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "_ViewAll", (PaginatedList<Category>.Create(allObj, page ?? 1, pageSize)) });
 
         }
@@ -62,12 +62,12 @@ namespace Larram.Areas.Admin.Controllers
         [PopupHelper.NoDirectAccess]
         public async Task<IActionResult> Details(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
-            var objDetails = await _unitOfWork.Category.Get(id);
-            if(objDetails == null)
+            var objDetails = await _unitOfWork.Size.Get(id);
+            if (objDetails == null)
             {
                 return NotFound();
             }
@@ -77,11 +77,11 @@ namespace Larram.Areas.Admin.Controllers
         [PopupHelper.NoDirectAccess]
         public async Task<IActionResult> Delete(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
-            var objToDelete = await _unitOfWork.Category.Get(id);
+            var objToDelete = await _unitOfWork.Size.Get(id);
             if (objToDelete == null)
             {
                 return NotFound();
@@ -89,54 +89,54 @@ namespace Larram.Areas.Admin.Controllers
             return View(objToDelete);
         }
 
-        [HttpPost, ActionName("Delete")] 
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var objToDelete = await _unitOfWork.Category.Get(id);
-            await _unitOfWork.Category.Remove(objToDelete);
+            var objToDelete = await _unitOfWork.Size.Get(id);
+            await _unitOfWork.Size.Remove(objToDelete);
             await _unitOfWork.Save();
-            return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "Index", _unitOfWork.Category.GetAll()) });
+            return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "Index", _unitOfWork.Size.GetAll()) });
         }
 
         [PopupHelper.NoDirectAccess]
         public async Task<IActionResult> Upsert(int? id)
         {
-            Category category = new Category();
-            if(id == null)
+            Size size = new Size();
+            if (id == null)
             {
                 //new category
-                return View(category);
+                return View(size);
             }
-           category = await _unitOfWork.Category.Get(id.GetValueOrDefault());
-            if(category == null)
-            { 
+            size = await _unitOfWork.Size.Get(id.GetValueOrDefault());
+            if (size == null)
+            {
                 return NotFound();
             }
             //edit category
-            return View(category);
+            return View(size);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert([Bind("Id, Name")] Category category)
+        public async Task<IActionResult> Upsert([Bind("Id, Name")] Size size)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if(category.Id == 0)
+                    if (size.Id == 0)
                     {
-                        await _unitOfWork.Category.Add(category);
+                        await _unitOfWork.Size.Add(size);
                     }
                     else
                     {
-                        _unitOfWork.Category.Update(category);
+                        _unitOfWork.Size.Update(size);
                     }
                 }
                 catch (DBConcurrencyException)
                 {
-                    if (!CategoryExists(category.Id))
+                    if (!SizeExists(size.Id))
                     {
                         return NotFound();
                     }
@@ -146,13 +146,13 @@ namespace Larram.Areas.Admin.Controllers
                     }
                 }
                 await _unitOfWork.Save();
-                return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "Index", _unitOfWork.Category.GetAll()) });
+                return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "Index", _unitOfWork.Size.GetAll()) });
             }
-            return Json(new { isValid = false, html = PopupHelper.RenderRazorViewToString(this, "Upsert", category) });
+            return Json(new { isValid = false, html = PopupHelper.RenderRazorViewToString(this, "Upsert", size) });
         }
-        public bool CategoryExists(int id)
+        public bool SizeExists(int id)
         {
-            return _context.Categories.Any(u => u.Id == id);
+            return _context.Sizes.Any(u => u.Id == id);
         }
     }
 }

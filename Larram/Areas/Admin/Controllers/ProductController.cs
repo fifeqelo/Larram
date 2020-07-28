@@ -7,17 +7,19 @@ using System.Threading.Tasks;
 using Larram.DataAccess.Data;
 using Larram.DataAccess.Repository.IRepository;
 using Larram.Models;
+using Larram.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Larram.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class CategoryController : Controller
+    public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ApplicationDbContext _context;
 
-        public CategoryController(IUnitOfWork unitOfWork, ApplicationDbContext context)
+        public ProductController(IUnitOfWork unitOfWork, ApplicationDbContext context)
         {
             _unitOfWork = unitOfWork;
             _context = context;
@@ -39,10 +41,10 @@ namespace Larram.Areas.Admin.Controllers
 
             ViewBag.CurrentFilter = search;
 
-            var allObj = await _unitOfWork.Category.GetAll();
+            var allObj = await _unitOfWork.Product.GetAll(includeProperties:"Category");
             if (!String.IsNullOrEmpty(search))
             {
-                allObj = await _unitOfWork.Category.GetAll(filter: u => u.Name.Contains(search));
+                allObj = await _unitOfWork.Product.GetAll(filter: u => u.Name.Contains(search));
             }
             switch (orderBy)
             {
@@ -54,8 +56,8 @@ namespace Larram.Areas.Admin.Controllers
                     break;
             }
             int pageSize = 10;
-            return View(PaginatedList<Category>.Create(allObj, page ?? 1, pageSize));
-            //return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "_ViewAll", (PaginatedList<Category>.Create(allObj, page ?? 1, pageSize)) });
+            return View(PaginatedList<Product>.Create(allObj, page ?? 1, pageSize));
+            //return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "_ViewAll", (PaginatedList<Product>.Create(allObj, page ?? 1, pageSize)) });
 
         }
 
@@ -66,7 +68,7 @@ namespace Larram.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            var objDetails = await _unitOfWork.Category.Get(id);
+            var objDetails = await _unitOfWork.Product.GetFirstOrDefault(d => d.Id == id, includeProperties:"Category");
             if(objDetails == null)
             {
                 return NotFound();
@@ -81,7 +83,7 @@ namespace Larram.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            var objToDelete = await _unitOfWork.Category.Get(id);
+            var objToDelete = await _unitOfWork.Product.Get(id);
             if (objToDelete == null)
             {
                 return NotFound();
@@ -93,50 +95,58 @@ namespace Larram.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var objToDelete = await _unitOfWork.Category.Get(id);
-            await _unitOfWork.Category.Remove(objToDelete);
+            var objToDelete = await _unitOfWork.Product.Get(id);
+            await _unitOfWork.Product.Remove(objToDelete);
             await _unitOfWork.Save();
-            return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "Index", _unitOfWork.Category.GetAll()) });
+            return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "Index", _unitOfWork.Product.GetAll()) });
         }
 
         [PopupHelper.NoDirectAccess]
         public async Task<IActionResult> Upsert(int? id)
         {
-            Category category = new Category();
+            ProductViewModel productViewModel = new ProductViewModel()
+            {
+                Product = new Product(),
+                CategoryList = _unitOfWork.Category.GetAllNotAsync().Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                }),
+            };
             if(id == null)
             {
-                //new category
-                return View(category);
+                //new product
+                return View(productViewModel);
             }
-           category = await _unitOfWork.Category.Get(id.GetValueOrDefault());
-            if(category == null)
+            productViewModel.Product = await _unitOfWork.Product.Get(id.GetValueOrDefault());
+            if(productViewModel == null)
             { 
                 return NotFound();
             }
-            //edit category
-            return View(category);
+            //edit product
+            return View(productViewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert([Bind("Id, Name")] Category category)
+        public async Task<IActionResult> Upsert([Bind("Product, CategoryList")] ProductViewModel productViewModel)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if(category.Id == 0)
+                    if(productViewModel.Product.Id == 0)
                     {
-                        await _unitOfWork.Category.Add(category);
+                        await _unitOfWork.Product.Add(productViewModel.Product);
                     }
                     else
                     {
-                        _unitOfWork.Category.Update(category);
+                        _unitOfWork.Product.Update(productViewModel.Product);
                     }
                 }
                 catch (DBConcurrencyException)
                 {
-                    if (!CategoryExists(category.Id))
+                    if (!ProductExists(productViewModel.Product.Id))
                     {
                         return NotFound();
                     }
@@ -146,13 +156,13 @@ namespace Larram.Areas.Admin.Controllers
                     }
                 }
                 await _unitOfWork.Save();
-                return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "Index", _unitOfWork.Category.GetAll()) });
+                return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "Index", _unitOfWork.Product.GetAll()) });
             }
-            return Json(new { isValid = false, html = PopupHelper.RenderRazorViewToString(this, "Upsert", category) });
+            return Json(new { isValid = false, html = PopupHelper.RenderRazorViewToString(this, "Upsert", productViewModel.Product) });
         }
-        public bool CategoryExists(int id)
+        public bool ProductExists(int id)
         {
-            return _context.Categories.Any(u => u.Id == id);
+            return _context.Products.Any(u => u.Id == id);
         }
     }
 }

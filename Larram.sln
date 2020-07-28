@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Larram.Models", "Larram.Mod
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Larram.Utility", "Larram.Utility\Larram.Utility.csproj", "{E716F106-C74F-4453-8405-7F0AB1FD7DA6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BulkyBook", "..\BulkyBook\BulkyBook\BulkyBook.csproj", "{DF527162-A0C0-4994-ACFB-A0444C451806}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +33,6 @@ Global
 		{E716F106-C74F-4453-8405-7F0AB1FD7DA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E716F106-C74F-4453-8405-7F0AB1FD7DA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E716F106-C74F-4453-8405-7F0AB1FD7DA6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DF527162-A0C0-4994-ACFB-A0444C451806}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DF527162-A0C0-4994-ACFB-A0444C451806}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DF527162-A0C0-4994-ACFB-A0444C451806}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DF527162-A0C0-4994-ACFB-A0444C451806}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
