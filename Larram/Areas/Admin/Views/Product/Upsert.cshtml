@@ -28,7 +28,13 @@
             </div>
             <div class="container d-flex justify-content-start mt-4">
                 Płeć:&nbsp;
-                @Html.DropDownListFor(m => m.Product.Gender, Model.GenderList, "-Wybierz płeć",
+                @*@Html.DropDownListFor(m => m.Product.Gender, Model.SelectedGender, "-Wybierz płeć",
+        new { @class = "form-control" })*@
+                @* @Html.DropDownList("SelectedGender",
+        Html.GetEnumSelectList<Gender>(),
+        "Select Gender", new { @class = "form-control" })*@
+
+                @Html.DropDownListFor(m => m.Product.Gender, Model.GenderList, "-Wybierz kategorię",
                 new { @class = "form-control" })
             </div>
             <span asp-validation-for="Product.Gender" class="text-danger Roboto" style="font-size:80%;"></span>

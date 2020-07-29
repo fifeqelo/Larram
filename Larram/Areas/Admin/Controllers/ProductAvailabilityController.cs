@@ -14,12 +14,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace Larram.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class ProductController : Controller
+    public class ProductAvailabilityController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ApplicationDbContext _context;
 
-        public ProductController(IUnitOfWork unitOfWork, ApplicationDbContext context)
+        public ProductAvailabilityController(IUnitOfWork unitOfWork, ApplicationDbContext context)
         {
             _unitOfWork = unitOfWork;
             _context = context;
@@ -41,10 +41,10 @@ namespace Larram.Areas.Admin.Controllers
 
             ViewBag.CurrentFilter = search;
 
-            var allObj = await _unitOfWork.Product.GetAll(includeProperties:"Category");
+            var allObj = await _unitOfWork.ProductAvailability.GetAll(includeProperties:"Category");
             if (!String.IsNullOrEmpty(search))
             {
-                allObj = await _unitOfWork.Product.GetAll(filter: u => u.Name.Contains(search));
+                //allObj = await _unitOfWork.ProductAvailability.GetAll(filter: u => u.Name.Contains(search));
             }
             switch (orderBy)
             {
@@ -56,11 +56,11 @@ namespace Larram.Areas.Admin.Controllers
                     break;
             }
             int pageSize = 10;
-            return View(PaginatedList<Product>.Create(allObj, page ?? 1, pageSize));
-            //return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "_ViewAll", (PaginatedList<Product>.Create(allObj, page ?? 1, pageSize)) });
+            return View(PaginatedList<ProductAvailability>.Create(allObj, page ?? 1, pageSize));
+            //return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "_ViewAll", (PaginatedList<ProductAvailability>.Create(allObj, page ?? 1, pageSize)) });
 
         }
-
+/*
         [PopupHelper.NoDirectAccess]
         public async Task<IActionResult> Details(int? id)
         {
@@ -68,7 +68,7 @@ namespace Larram.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            var objDetails = await _unitOfWork.Product.GetFirstOrDefault(d => d.Id == id, includeProperties:"Category");
+            var objDetails = await _unitOfWork.ProductAvailability.GetFirstOrDefault(d => d.Id == id, includeProperties:"Category");
             if(objDetails == null)
             {
                 return NotFound();
@@ -83,7 +83,7 @@ namespace Larram.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            var objToDelete = await _unitOfWork.Product.Get(id);
+            var objToDelete = await _unitOfWork.ProductAvailability.Get(id);
             if (objToDelete == null)
             {
                 return NotFound();
@@ -95,18 +95,18 @@ namespace Larram.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var objToDelete = await _unitOfWork.Product.Get(id);
-            await _unitOfWork.Product.Remove(objToDelete);
+            var objToDelete = await _unitOfWork.ProductAvailability.Get(id);
+            await _unitOfWork.ProductAvailability.Remove(objToDelete);
             await _unitOfWork.Save();
-            return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "Index", _unitOfWork.Product.GetAll()) });
+            return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "Index", _unitOfWork.ProductAvailability.GetAll()) });
         }
 
         [PopupHelper.NoDirectAccess]
         public async Task<IActionResult> Upsert(int? id)
         {
-            ProductViewModel productViewModel = new ProductViewModel()
+            ProductAvailabilityViewModel productAvailabilityViewModel = new ProductAvailabilityViewModel()
             {
-                Product = new Product(),
+                ProductAvailability = new ProductAvailability(),
                 CategoryList = _unitOfWork.Category.GetAllNotAsync().Select(i => new SelectListItem
                 {
                     Text = i.Name,
@@ -120,38 +120,38 @@ namespace Larram.Areas.Admin.Controllers
         };
             if(id == null)
             {
-                //new product
-                return View(productViewModel);
+                //new productAvailability
+                return View(productAvailabilityViewModel);
             }
-            productViewModel.Product = await _unitOfWork.Product.Get(id.GetValueOrDefault());
-            if(productViewModel == null)
+            productAvailabilityViewModel.ProductAvailability = await _unitOfWork.ProductAvailability.Get(id.GetValueOrDefault());
+            if(productAvailabilityViewModel == null)
             { 
                 return NotFound();
             }
-            //edit product
-            return View(productViewModel);
+            //edit productAvailability
+            return View(productAvailabilityViewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert([Bind("Product, CategoryList")] ProductViewModel productViewModel)
+        public async Task<IActionResult> Upsert([Bind("ProductAvailability, CategoryList")] ProductAvailabilityViewModel productAvailabilityViewModel)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if(productViewModel.Product.Id == 0)
+                    if(productAvailabilityViewModel.ProductAvailability.Id == 0)
                     {
-                        await _unitOfWork.Product.Add(productViewModel.Product);
+                        await _unitOfWork.ProductAvailability.Add(productAvailabilityViewModel.ProductAvailability);
                     }
                     else
                     {
-                        _unitOfWork.Product.Update(productViewModel.Product);
+                        _unitOfWork.ProductAvailability.Update(productAvailabilityViewModel.ProductAvailability);
                     }
                 }
                 catch (DBConcurrencyException)
                 {
-                    if (!ProductExists(productViewModel.Product.Id))
+                    if (!ProductAvailabilityExists(productAvailabilityViewModel.ProductAvailability.Id))
                     {
                         return NotFound();
                     }
@@ -161,13 +161,13 @@ namespace Larram.Areas.Admin.Controllers
                     }
                 }
                 await _unitOfWork.Save();
-                return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "Index", _unitOfWork.Product.GetAll()) });
+                return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "Index", _unitOfWork.ProductAvailability.GetAll()) });
             }
-            return Json(new { isValid = false, html = PopupHelper.RenderRazorViewToString(this, "Upsert", productViewModel.Product) });
+            return Json(new { isValid = false, html = PopupHelper.RenderRazorViewToString(this, "Upsert", productAvailabilityViewModel.ProductAvailability) });
         }
-        public bool ProductExists(int id)
+        public bool ProductAvailabilityExists(int id)
         {
-            return _context.Products.Any(u => u.Id == id);
-        }
+            return _context.ProductAvailabilitys.Any(u => u.Id == id);
+        }*/
     }
 }

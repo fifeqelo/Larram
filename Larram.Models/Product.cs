@@ -23,9 +23,12 @@ namespace Larram.Models
         [EnumDataType(typeof(Gender))]
         public Gender Gender { get; set; }
 
+        [Required(ErrorMessage = "To pole jest wymagane.")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime CreatedDate { get; set; }
+
+        [Required(ErrorMessage = "To pole jest wymagane.")]
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }

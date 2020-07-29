@@ -17,5 +17,6 @@ namespace Larram.DataAccess.Data
         public DbSet<Size> Sizes { get; set; }
         public DbSet<Color> Colors { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductAvailability> ProductAvailabilities { get; set; }
     }
 }

@@ -18,12 +18,14 @@ namespace Larram.DataAccess.Repository
             Size = new SizeRepository(_db);
             Color = new ColorRepository(_db);
             Product = new ProductRepository(_db);
+            ProductAvailability = new ProductAvailabilityRepository(_db);
         }
 
         public ICategoryRepository Category {get; private set;}
         public ISizeRepository Size { get; private set; }
         public IColorRepository Color { get; private set; }
         public IProductRepository Product { get; private set; }
+        public IProductAvailabilityRepository ProductAvailability { get; private set; }
 
         public async Task Save()
         {

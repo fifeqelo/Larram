@@ -19,23 +19,25 @@
                     <th scope="col">Płeć</th>
                     <th scope="col">Data utworzenia</th>
                     <th scope="col">Akcje</th>
+                    <th scope="col">Dostępność</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var product in Model)
                 {
-                    <tr>
+                <tr>
 
-                        <td style="width:40%;">@product.Name</td>
-                        <td style="width:10%;">@product.Category.Name</td>
-                        <td style="width:10%;">@product.Gender</td>
-                        <td style="width:20%;">@product.CreatedDate</td>
-                        <td style="width:20%;">
-                            <a onclick="showInPopup('@Url.Action("Details","Product",new {id=product.Id},Context.Request.Scheme)')" class="text-dark"><i style="font-size:22px" data-feather="eye"></i></a>
-                            <a onclick="showInPopup('@Url.Action("Upsert","Product",new {id=product.Id},Context.Request.Scheme)')" class="text-dark"><i style="font-size:22px" data-feather="edit"></i></a>
-                            <a onclick="showInPopup('@Url.Action("Delete","Product",new {id=product.Id},Context.Request.Scheme)')" class="text-dark"><i style="font-size:22px" data-feather="trash-2"></i></a>
-                        </td>
-                    </tr>
+                    <td style="width:40%;">@product.Name</td>
+                    <td style="width:10%;">@product.Category.Name</td>
+                    <td style="width:10%;">@product.Gender</td>
+                    <td style="width:20%;">@product.CreatedDate</td>
+                    <td style="width:15%;">
+                        <a onclick="showInPopup('@Url.Action("Details","Product",new {id=product.Id},Context.Request.Scheme)')" class="text-dark"><i style="font-size:22px" data-feather="eye"></i></a>
+                        <a onclick="showInPopup('@Url.Action("Upsert","Product",new {id=product.Id},Context.Request.Scheme)')" class="text-dark"><i style="font-size:22px" data-feather="edit"></i></a>
+                        <a onclick="showInPopup('@Url.Action("Delete","Product",new {id=product.Id},Context.Request.Scheme)')" class="text-dark"><i style="font-size:22px" data-feather="trash-2"></i></a>
+                    </td>
+                    <td style="width:5%;"><a href="#" class="text-light"  style="font-size:70%"><div class="container p-2 bg-dark">EDYCJA <i style="font-size:16px" data-feather="tool"></i></div></a></td>
+                </tr>
                 }
             </tbody>
         </table>
