@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Larram.DataAccess.Data;
 using Larram.DataAccess.Repository.IRepository;
 using Larram.Models;
 using Larram.Models.ViewModels;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -18,11 +20,13 @@ namespace Larram.Areas.Admin.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _hostEnviroment;
 
-        public ProductController(IUnitOfWork unitOfWork, ApplicationDbContext context)
+        public ProductController(IUnitOfWork unitOfWork, ApplicationDbContext context, IWebHostEnvironment hostEnvironment)
         {
             _unitOfWork = unitOfWork;
             _context = context;
+            _hostEnviroment = hostEnvironment;
         }
 
         public async Task<IActionResult> Index(string orderBy, string search, string currentFilter, int? page)
@@ -41,7 +45,7 @@ namespace Larram.Areas.Admin.Controllers
 
             ViewBag.CurrentFilter = search;
 
-            var allObj = await _unitOfWork.Product.GetAll(includeProperties:"Category");
+            var allObj = await _unitOfWork.Product.GetAll(includeProperties:"Category,Color");
             if (!String.IsNullOrEmpty(search))
             {
                 allObj = await _unitOfWork.Product.GetAll(filter: u => u.Name.Contains(search));
@@ -68,7 +72,7 @@ namespace Larram.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            var objDetails = await _unitOfWork.Product.GetFirstOrDefault(d => d.Id == id, includeProperties:"Category");
+            var objDetails = await _unitOfWork.Product.GetFirstOrDefault(d => d.Id == id, includeProperties:"Category,Color");
             if(objDetails == null)
             {
                 return NotFound();
@@ -96,7 +100,9 @@ namespace Larram.Areas.Admin.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var objToDelete = await _unitOfWork.Product.Get(id);
+            var availabilityToDelete = await _unitOfWork.ProductAvailability.GetAll(filter: u => u.ProductId == id);
             await _unitOfWork.Product.Remove(objToDelete);
+            await _unitOfWork.ProductAvailability.RemoveRange(availabilityToDelete);
             await _unitOfWork.Save();
             return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "Index", _unitOfWork.Product.GetAll()) });
         }
@@ -117,7 +123,12 @@ namespace Larram.Areas.Admin.Controllers
                     Value = e.ToString(), 
                     Text = e.ToString() 
                 }),
-        };
+                ColorList = _unitOfWork.Color.GetAllNotAsync().Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                }),
+            };
             if(id == null)
             {
                 //new product
@@ -134,10 +145,42 @@ namespace Larram.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert([Bind("Product, CategoryList")] ProductViewModel productViewModel)
+        public async Task<IActionResult> Upsert([Bind("Product, CategoryList, Gender, ColorList")] ProductViewModel productViewModel)
         {
             if (ModelState.IsValid)
             {
+                string webRootPath = _hostEnviroment.WebRootPath;
+                var files = HttpContext.Request.Form.Files;
+                if (files.Count > 0)
+                {
+                    string fileName = Guid.NewGuid().ToString();
+                    var uploads = Path.Combine(webRootPath, @"images/products");
+                    var extenstion = Path.GetExtension(files[0].FileName);
+
+                    if (productViewModel.Product.ImageUrl != null)
+                    {
+                        //remove old image
+                        var imagePath = Path.Combine(webRootPath, productViewModel.Product.ImageUrl.TrimStart('\\'));
+                        if (System.IO.File.Exists(imagePath))
+                        {
+                            System.IO.File.Delete(imagePath);
+                        }
+                    }
+                    using (var filesStreams = new FileStream(Path.Combine(uploads, fileName + extenstion), FileMode.Create))
+                    {
+                        files[0].CopyTo(filesStreams);
+                    }
+                    productViewModel.Product.ImageUrl = @"\images\products\" + fileName + extenstion;
+                }
+                else
+                {
+                    //update when no image change
+                    if (productViewModel.Product.Id != 0)
+                    {
+                        Product objFromDb = await _unitOfWork.Product.Get(productViewModel.Product.Id);
+                        productViewModel.Product.ImageUrl = objFromDb.ImageUrl;
+                    }
+                }
                 try
                 {
                     if(productViewModel.Product.Id == 0)

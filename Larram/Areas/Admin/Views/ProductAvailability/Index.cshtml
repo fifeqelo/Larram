@@ -1,0 +1,52 @@
+﻿@model PaginatedList<Larram.Models.ProductAvailability>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container p-5">
+    <div class="container mb-4 ml-0 p-0">
+        <h1 class="Roboto text-center m-0" style="font-size:200%;"><b>ZARZĄDZANIE DOSTĘPNOŚCIĄ PRODUKTU:<br />@ViewBag.ProductName</b></h1>
+        <hr class="m-0" />
+        <div class="d-flex justify-content-between p-0">
+            <div class="justify-content-start mt-3 Roboto" style="width:20%; font-size:70%; display:inline;">
+                <form asp-controller="ProductAvailability" asp-action="Index" method="get" style="display:inline;">
+                    <p>
+                        <input class="form-control Roboto" type="text" value="@ViewBag.CurrentFilter" name="search" placeholder="Szukaj..." style="width:70%; border-radius:0;" />
+                    </p>
+                    <a asp-action="Index" class="text-dark" style="font-size:120%;">Wyczyść filtry</a>
+                </form>
+            </div>
+            <a onclick="showInPopup('@Url.Action("Upsert","ProductAvailability",new { productId = @ViewBag.ProductId },Context.Request.Scheme)')" class="text-light button-managment bg-dark Roboto ml-0 pt-2 pr-0 mr-0 pl-3 justify-content-end" style="width:15%; padding:0.5rem; height:50%; font-size:75%;">
+                DODAJ DOSTĘPNOŚĆ <i style="font-size:16px" class="mb-1" data-feather="plus"></i>
+            </a>
+        </div>
+        <div id="view-all">
+            <partial name="_ViewAll" />
+        </div>
+        @{
+            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+        }
+        <div class="d-flex justify-content-center">
+            <a asp-action="Index"
+               asp-route-orderBy="@ViewBag.CurrentOrderBy"
+               asp-route-page="@(Model.PageIndex - 1)"
+               asp-route-currentFilter="@ViewBag.CurrentFilter"
+               class="btn btn-default p-1 text-light button-managment bg-dark Roboto @prevDisabled" style="width:15%; border-radius:0; font-size:110%;">
+                <i style="font-size:21px" data-feather="arrow-left"></i> Poprzednia
+            </a>
+            <a asp-action="Index"
+               asp-route-orderBy="@ViewBag.CurrentOrderBy"
+               asp-route-page="@(Model.PageIndex + 1)"
+               asp-route-currentFilter="@ViewBag.CurrentFilter"
+               class="btn btn-default p-1 text-light button-managment bg-dark Roboto @nextDisabled" style="width:15%;  border-radius:0; font-size:110%;">
+                Następna <i style="font-size:21px" data-feather="arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

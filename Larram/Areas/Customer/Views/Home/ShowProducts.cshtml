@@ -1,0 +1,24 @@
+﻿@model IEnumerable<Larram.Models.Product>
+@{
+    ViewData["Title"] = "ShowProducts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="container p-5 Roboto">
+        <div class="row row-cols-3">
+            @foreach (var product in Model)
+            {
+            <div class="col-4">
+                <div class="card" style="border:0px;">
+                    <a asp-area="Customer" asp-controller="Home" asp-action="ProductDetails" asp-route-id="@product.Id"><img src="@product.ImageUrl" class="card-img-top rounded-0" /></a>
+                    <div class="pl-1">
+                        <p class="card-title h5"><b style="color:#2c3e50">@product.Name</b></p>
+                    </div>
+                    <div class="pl-1">
+                        <p class="card-title h5"><b style="color:#2c3e50">@product.Price.ToString("0.00")</b></p>
+                    </div>
+                </div>
+            </div>
+            }
+            </div>
+    </div>

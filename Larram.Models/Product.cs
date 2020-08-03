@@ -24,6 +24,18 @@ namespace Larram.Models
         public Gender Gender { get; set; }
 
         [Required(ErrorMessage = "To pole jest wymagane.")]
+        public int ColorId { get; set; }
+        [ForeignKey("ColorId")]
+        public Color Color { get; set; }
+
+        [Required(ErrorMessage = "To pole jest wymagane.")]
+        [Range(1, 100000, ErrorMessage = "Wybierz wartość z przedziały od 1 do 100000.")]
+        public double Price { get; set; }
+
+        [Range(0, 100000, ErrorMessage = "Wybierz wartość z przedziały od 0 do 100000.")]
+        public double DiscountPrice { get; set; }
+
+        [Required(ErrorMessage = "To pole jest wymagane.")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime CreatedDate { get; set; }
@@ -32,6 +44,8 @@ namespace Larram.Models
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
+
+        public string ImageUrl { get; set; }
     }
     public enum Gender
     {

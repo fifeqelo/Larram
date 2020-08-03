@@ -22,16 +22,9 @@ namespace Larram.DataAccess.Repository
             var objFromDb = _db.ProductAvailabilities.FirstOrDefault(s => s.Id == productAvailability.Id);
             if(objFromDb != null)
             {
-                if (productAvailability.ImageUrl != null)
-                {
-                    objFromDb.ImageUrl = productAvailability.ImageUrl;
-                }
                 objFromDb.ProductId = productAvailability.ProductId;
-                objFromDb.ColorId = productAvailability.ColorId;
                 objFromDb.SizeId = productAvailability.SizeId;
                 objFromDb.Quantity = productAvailability.Quantity;
-                objFromDb.Price = productAvailability.Price;
-                objFromDb.DiscountPrice = productAvailability.DiscountPrice;
                 _db.SaveChanges();
             }
         }

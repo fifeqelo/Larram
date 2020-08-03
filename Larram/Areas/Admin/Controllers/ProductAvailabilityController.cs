@@ -25,10 +25,13 @@ namespace Larram.Areas.Admin.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string orderBy, string search, string currentFilter, int? page)
+        public async Task<IActionResult> Index(string productName, int productId,string orderBy, string search, string currentFilter, int? page)
         {
             ViewBag.CurrentOrderBy = orderBy;
             ViewBag.SortParam = orderBy;
+            ViewBag.ProductName = productName;
+            ViewBag.ProductId = productId;
+
 
             if (search != null)
             {
@@ -41,12 +44,12 @@ namespace Larram.Areas.Admin.Controllers
 
             ViewBag.CurrentFilter = search;
 
-            var allObj = await _unitOfWork.ProductAvailability.GetAll(includeProperties:"Category");
+            var allObj = await _unitOfWork.ProductAvailability.GetAll(filter: n => n.ProductId == productId, includeProperties:"Product,Size");
             if (!String.IsNullOrEmpty(search))
             {
                 //allObj = await _unitOfWork.ProductAvailability.GetAll(filter: u => u.Name.Contains(search));
             }
-            switch (orderBy)
+           /* switch (orderBy)
             {
                 case "name_asc":
                     allObj = allObj.OrderBy(u => u.Name);
@@ -54,13 +57,13 @@ namespace Larram.Areas.Admin.Controllers
                 case "name_desc":
                     allObj = allObj.OrderByDescending(u => u.Name);
                     break;
-            }
+            }*/
             int pageSize = 10;
             return View(PaginatedList<ProductAvailability>.Create(allObj, page ?? 1, pageSize));
             //return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "_ViewAll", (PaginatedList<ProductAvailability>.Create(allObj, page ?? 1, pageSize)) });
 
         }
-/*
+
         [PopupHelper.NoDirectAccess]
         public async Task<IActionResult> Details(int? id)
         {
@@ -68,7 +71,7 @@ namespace Larram.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            var objDetails = await _unitOfWork.ProductAvailability.GetFirstOrDefault(d => d.Id == id, includeProperties:"Category");
+            var objDetails = await _unitOfWork.ProductAvailability.GetFirstOrDefault(d => d.Id == id, includeProperties:"Product,Size");
             if(objDetails == null)
             {
                 return NotFound();
@@ -102,20 +105,16 @@ namespace Larram.Areas.Admin.Controllers
         }
 
         [PopupHelper.NoDirectAccess]
-        public async Task<IActionResult> Upsert(int? id)
+        public async Task<IActionResult> Upsert(int? id, int? productId)
         {
+            ViewBag.ProductId = productId;
             ProductAvailabilityViewModel productAvailabilityViewModel = new ProductAvailabilityViewModel()
             {
                 ProductAvailability = new ProductAvailability(),
-                CategoryList = _unitOfWork.Category.GetAllNotAsync().Select(i => new SelectListItem
+                SizeList = _unitOfWork.Size.GetAllNotAsync().Select(i => new SelectListItem
                 {
                     Text = i.Name,
                     Value = i.Id.ToString()
-                }),
-                GenderList = Enum.GetValues(typeof(Gender)).Cast<Gender>().Select(e => new SelectListItem 
-                { 
-                    Value = e.ToString(), 
-                    Text = e.ToString() 
                 }),
         };
             if(id == null)
@@ -134,7 +133,7 @@ namespace Larram.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert([Bind("ProductAvailability, CategoryList")] ProductAvailabilityViewModel productAvailabilityViewModel)
+        public async Task<IActionResult> Upsert([Bind("ProductAvailability, SizeList")] ProductAvailabilityViewModel productAvailabilityViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -167,7 +166,7 @@ namespace Larram.Areas.Admin.Controllers
         }
         public bool ProductAvailabilityExists(int id)
         {
-            return _context.ProductAvailabilitys.Any(u => u.Id == id);
-        }*/
+            return _context.ProductAvailabilities.Any(u => u.Id == id);
+        }
     }
 }

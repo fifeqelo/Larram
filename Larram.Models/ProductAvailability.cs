@@ -18,11 +18,6 @@ namespace Larram.Models
         public Product Product { get; set; }
 
         [Required(ErrorMessage = "To pole jest wymagane.")]
-        public int ColorId { get; set; }
-        [ForeignKey("ColorId")]
-        public Color Color { get; set; }
-
-        [Required(ErrorMessage = "To pole jest wymagane.")]
         public int SizeId { get; set; }
         [ForeignKey("SizeId")]
         public Size Size { get; set; }
@@ -30,14 +25,5 @@ namespace Larram.Models
         [Required(ErrorMessage = "To pole jest wymagane.")]
         [Range(1, 100000, ErrorMessage = "Wybierz wartość z przedziały od 1 do 100000.")]
         public double Quantity { get; set; }
-
-        [Required(ErrorMessage = "To pole jest wymagane.")]
-        [Range(1, 100000, ErrorMessage = "Wybierz wartość z przedziały od 1 do 100000.")]
-        public double Price { get; set; }
-
-        [Range(1, 100000, ErrorMessage = "Wybierz wartość z przedziały od 1 do 100000.")]
-        public double DiscountPrice { get; set; }
-
-        public string ImageUrl { get; set; }
     }
 }
