@@ -9,6 +9,8 @@ using Larram.DataAccess.Data;
 using Larram.DataAccess.Repository.IRepository;
 using Larram.Models;
 using Larram.Models.ViewModels;
+using Larram.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -16,6 +18,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace Larram.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

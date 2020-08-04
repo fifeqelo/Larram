@@ -46,11 +46,12 @@ namespace Larram.Areas.Customer.Controllers
         public async Task<IActionResult> ProductDetails(int? id)
         {
             if (id == null) return NotFound();
-            ProductAvailabilityViewModel productAvailabilityViewModel = new ProductAvailabilityViewModel();
-            productAvailabilityViewModel.ProductAvailabilities = await _unitOfWork.ProductAvailability.GetAll(filter: u => u.ProductId == id, includeProperties:"Size");
             string productName = _context.Products.Where(u => u.Id == id).Select(u => u.Name).SingleOrDefault();
-            productAvailabilityViewModel.Products = await _unitOfWork.Product.GetAll(filter: u => u.Name == productName, includeProperties:"Color");
-            productAvailabilityViewModel.Product = await _unitOfWork.Product.Get(id);
+            ProductDetailsViewModel productAvailabilityViewModel = new ProductDetailsViewModel() {
+                ProductAvailabilities = await _unitOfWork.ProductAvailability.GetAll(filter: u => u.ProductId == id, includeProperties: "Size"),
+                Products = await _unitOfWork.Product.GetAll(filter: u => u.Name == productName, includeProperties: "Color"),
+                Product = await _unitOfWork.Product.Get(id),
+        };
             if (productAvailabilityViewModel.Product == null) return NotFound();
             return View(productAvailabilityViewModel);
         }

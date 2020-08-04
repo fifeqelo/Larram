@@ -25,7 +25,6 @@
 
                         <td style="width:70%;">@category.Name</td>
                         <td style="width:30%;">
-                            <a onclick="showInPopup('@Url.Action("Details","Category",new {id=category.Id},Context.Request.Scheme)')" class="text-dark"><i style="font-size:22px" data-feather="eye"></i></a>
                             <a onclick="showInPopup('@Url.Action("Upsert","Category",new {id=category.Id},Context.Request.Scheme)')" class="text-dark"><i style="font-size:22px" data-feather="edit"></i></a>
                             <a onclick="showInPopup('@Url.Action("Delete","Category",new {id=category.Id},Context.Request.Scheme)')" class="text-dark"><i style="font-size:22px" data-feather="trash-2"></i></a>
                         </td>

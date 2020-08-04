@@ -1,18 +1,36 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using Larram.Utility
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
     <ul class="navbar-nav">
         @if (SignInManager.IsSignedIn(User))
         {
+        <li class="nav-item">
+@*            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>*@
+            <a class="nav-link text-light navBar-panel Roboto" asp-area="Identity" asp-page="/Account/Manage/Index"><i style="font-size:32px" data-feather="user"></i><p>KONTO</p></a>
+        </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+                <form id="myform" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <a href="#" onclick="document.getElementById('myform').submit()" class="nav-link text-light navBar-panel Roboto"><i style="font-size:32px" data-feather="log-out"></i><p>WYLOGUJ</p></a>
+                    </form>
             </li>
-            <li class="nav-item">
-                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                    <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-                </form>
+            @if(User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee)){
+            <li class="nav-item text-center">
+                <a class="nav-link dropdown-toggle text-light navBar-panel Roboto" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i style="font-size:32px" data-feather="settings"></i><p>ZARZĄDZANIE</p>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg-right bg-dark" aria-labelledby="navbarDropdown">
+                    @if (User.IsInRole(SD.Role_Admin)) {
+                    <a class="text-light dropdown-item Roboto" asp-area="Admin" asp-controller="Category" asp-action="Index">KATEGORIE</a>
+                    <a class="text-light dropdown-item Roboto" asp-area="Admin" asp-controller="Size" asp-action="Index">ROZMIARY</a>
+                    <a class="text-light dropdown-item Roboto" asp-area="Admin" asp-controller="Color" asp-action="Index">KOLORY</a>
+                    <a class="text-light dropdown-item Roboto" asp-area="Admin" asp-controller="Product" asp-action="Index">PRODUKTY</a>
+                    <a class="text-light dropdown-item Roboto" asp-area="Admin" asp-controller="User" asp-action="Index">UŻYTKOWNICY</a>
+                    }
+                </div>
             </li>
+            }
         }
         else
         {
@@ -24,9 +42,6 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link text-light navBar-panel Roboto" asp-area="Identity" asp-page="/Account/Login"><i style="font-size:32px" data-feather="shopping-bag"></i><p>KOSZYK</p></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-light navBar-panel Roboto" asp-area="Admin" asp-controller="ShopManagement" asp-action="Menu"><i style="font-size:32px" data-feather="settings"></i><p>ZARZĄDZANIE</p></a>
             </li>
         }
     </ul>

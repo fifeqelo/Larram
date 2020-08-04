@@ -7,11 +7,14 @@ using System.Threading.Tasks;
 using Larram.DataAccess.Data;
 using Larram.DataAccess.Repository.IRepository;
 using Larram.Models;
+using Larram.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Larram.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class ColorController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -57,21 +60,6 @@ namespace Larram.Areas.Admin.Controllers
             return View(PaginatedList<Color>.Create(allObj, page ?? 1, pageSize));
             //return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "_ViewAll", (PaginatedList<Color>.Create(allObj, page ?? 1, pageSize)) });
 
-        }
-
-        [PopupHelper.NoDirectAccess]
-        public async Task<IActionResult> Details(int? id)
-        {
-            if(id == null)
-            {
-                return NotFound();
-            }
-            var objDetails = await _unitOfWork.Color.Get(id);
-            if (objDetails == null)
-            {
-                return NotFound();
-            }
-            return View(objDetails);
         }
 
         [PopupHelper.NoDirectAccess]

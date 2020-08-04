@@ -18,5 +18,6 @@ namespace Larram.DataAccess.Data
         public DbSet<Color> Colors { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductAvailability> ProductAvailabilities { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
     }
 }

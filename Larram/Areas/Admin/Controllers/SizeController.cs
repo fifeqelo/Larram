@@ -7,11 +7,14 @@ using System.Threading.Tasks;
 using Larram.DataAccess.Data;
 using Larram.DataAccess.Repository.IRepository;
 using Larram.Models;
+using Larram.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Larram.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class SizeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

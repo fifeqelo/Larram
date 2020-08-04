@@ -29,7 +29,6 @@
                         <div class="container-fluid justify-content-center align-content-center w-25 h-25 p-2 border" style="background-color:@color.HexValue;"></div>
                     </td>
                     <td style="width:30%;">
-                        <a onclick="showInPopup('@Url.Action("Details","Color",new {id=color.Id},Context.Request.Scheme)')" class="text-dark"><i style="font-size:22px" data-feather="eye"></i></a>
                         <a onclick="showInPopup('@Url.Action("Upsert","Color",new {id=color.Id},Context.Request.Scheme)')" class="text-dark"><i style="font-size:22px" data-feather="edit"></i></a>
                         <a onclick="showInPopup('@Url.Action("Delete","Color",new {id=color.Id},Context.Request.Scheme)')" class="text-dark"><i style="font-size:22px" data-feather="trash-2"></i></a>
                     </td>

@@ -12,6 +12,7 @@ namespace Larram.DataAccess.Repository.IRepository
         IColorRepository Color { get; }
         IProductRepository Product { get; }
         IProductAvailabilityRepository ProductAvailability { get; }
+        IApplicationUserRepository ApplicationUser { get; }
 
         Task Save();
     }

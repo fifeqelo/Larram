@@ -19,6 +19,7 @@ namespace Larram.DataAccess.Repository
             Color = new ColorRepository(_db);
             Product = new ProductRepository(_db);
             ProductAvailability = new ProductAvailabilityRepository(_db);
+            ApplicationUser = new ApplicationUserRepository(_db);
         }
 
         public ICategoryRepository Category {get; private set;}
@@ -26,6 +27,7 @@ namespace Larram.DataAccess.Repository
         public IColorRepository Color { get; private set; }
         public IProductRepository Product { get; private set; }
         public IProductAvailabilityRepository ProductAvailability { get; private set; }
+        public IApplicationUserRepository ApplicationUser { get; private set; }
 
         public async Task Save()
         {
