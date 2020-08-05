@@ -12,6 +12,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Larram.DataAccess.Data;
 using Microsoft.EntityFrameworkCore.Internal;
 using System.Web.WebPages;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
+using Larram.Utility;
 
 namespace Larram.Areas.Customer.Controllers
 {
@@ -31,6 +35,15 @@ namespace Larram.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if(claim != null)
+            {
+                var count = _unitOfWork.ShoppingCart.GetAllNotAsync(u => u.ApplicationUserId == claim.Value).ToList().Count();
+                HttpContext.Session.SetInt32(SD.ShoppingCartSession, count);
+            }
+
+
             return View();
         }
 
@@ -54,6 +67,49 @@ namespace Larram.Areas.Customer.Controllers
         };
             if (productAvailabilityViewModel.Product == null) return NotFound();
             return View(productAvailabilityViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> ProductDetails(int Size, int id, ShoppingCart shoppingCart)
+        {
+            shoppingCart.Id = 0;
+            if (ModelState.IsValid)
+            {
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+                if(Size == 0)
+                {
+                    return RedirectToAction(nameof(ShowProducts));
+                }
+
+                var productId = await _unitOfWork.ProductAvailability.GetFirstOrDefault(u => u.ProductId == id && u.SizeId == Size);
+
+                shoppingCart.ProductAvailabilityId = productId.Id;
+                shoppingCart.ApplicationUserId = claim.Value;
+
+                ShoppingCart cartFromDb = await _unitOfWork.ShoppingCart.GetFirstOrDefault(u => u.ApplicationUserId == shoppingCart.ApplicationUserId
+                && u.ProductAvailabilityId == shoppingCart.ProductAvailabilityId);
+
+                if(cartFromDb == null)
+                {
+                    await _unitOfWork.ShoppingCart.Add(shoppingCart);
+                }
+                else
+                {
+                    cartFromDb.Quantity += shoppingCart.Quantity;
+                }
+                await _unitOfWork.Save();
+
+                var count = _unitOfWork.ShoppingCart.GetAllNotAsync(u => u.ApplicationUserId == shoppingCart.ApplicationUserId).ToList().Count();
+
+                HttpContext.Session.SetInt32(SD.ShoppingCartSession, count);
+
+                return RedirectToAction(nameof(ShowProducts));
+            }
+            return RedirectToAction(nameof(ShowProducts));
         }
 
         public IActionResult Privacy()

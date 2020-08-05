@@ -13,6 +13,9 @@ namespace Larram.DataAccess.Repository.IRepository
         IProductRepository Product { get; }
         IProductAvailabilityRepository ProductAvailability { get; }
         IApplicationUserRepository ApplicationUser { get; }
+        IShoppingCartRepository ShoppingCart { get; }
+        IOrderDetailsRepository OrderDetails { get; }
+        IOrderRepository Order { get; }
 
         Task Save();
     }

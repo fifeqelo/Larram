@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.6" />
+    <PackageReference Include="Zender.Mail" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

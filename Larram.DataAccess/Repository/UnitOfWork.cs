@@ -20,6 +20,9 @@ namespace Larram.DataAccess.Repository
             Product = new ProductRepository(_db);
             ProductAvailability = new ProductAvailabilityRepository(_db);
             ApplicationUser = new ApplicationUserRepository(_db);
+            ShoppingCart = new ShoppingCartRepository(_db);
+            Order = new OrderRepository(_db);
+            OrderDetails = new OrderDetailsRepository(_db);
         }
 
         public ICategoryRepository Category {get; private set;}
@@ -28,6 +31,9 @@ namespace Larram.DataAccess.Repository
         public IProductRepository Product { get; private set; }
         public IProductAvailabilityRepository ProductAvailability { get; private set; }
         public IApplicationUserRepository ApplicationUser { get; private set; }
+        public IShoppingCartRepository ShoppingCart { get; private set; }
+        public IOrderRepository Order { get; private set; }
+        public IOrderDetailsRepository OrderDetails { get; private set; }
 
         public async Task Save()
         {

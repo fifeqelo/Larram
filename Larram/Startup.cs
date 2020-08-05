@@ -50,6 +50,21 @@ namespace Larram
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
                 options.SlidingExpiration = true;
             });
+            services.AddAuthentication().AddFacebook(options => {
+                options.AppId = "341325690589129";
+                options.AppSecret = "aa5bb7097dfb1c4dd48490e98cec0aa8";
+            });
+            services.AddAuthentication().AddGoogle(options =>
+            {
+                options.ClientId = "540093190960-jn3apgr8df415dkfkvp47c6ge381cefn.apps.googleusercontent.com";
+                options.ClientSecret = "Q1Zrp_Vcc_Uq2h-8JuBTR9cE";
+            });
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,6 +85,8 @@ namespace Larram
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseSession();
 
             app.UseAuthentication();
             app.UseAuthorization();

@@ -133,8 +133,8 @@ namespace Larram.Areas.Identity.Pages.Account
                     {
                         await _userManager.AddToRoleAsync(user, user.Role);
                     }
-
-                    /*var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    
+/*                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
@@ -165,7 +165,16 @@ namespace Larram.Areas.Identity.Pages.Account
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
+
             }
+            Input = new InputModel()
+            {
+                RolesList = _roleManager.Roles.Where(u => u.Name != SD.Role_Customer).Select(x => x.Name).Select(i => new SelectListItem
+                {
+                    Text = i,
+                    Value = i
+                })
+            };
 
             // If we got this far, something failed, redisplay form
             return Page();
