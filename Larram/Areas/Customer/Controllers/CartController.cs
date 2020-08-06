@@ -1,5 +1,6 @@
 ﻿using Larram.DataAccess.Data;
 using Larram.DataAccess.Repository.IRepository;
+using Larram.Models;
 using Larram.Models.ViewModels;
 using Larram.Utility;
 using Microsoft.AspNetCore.Authorization;
@@ -19,6 +20,7 @@ namespace Larram.Areas.Admin.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly ApplicationDbContext _context;
 
+        [BindProperty]
         public ShoppingCartViewModel shoppingCartViewModel { get; set; }
 
         public CartController(IUnitOfWork unitOfWork, ApplicationDbContext context)
@@ -88,6 +90,83 @@ namespace Larram.Areas.Admin.Controllers
             HttpContext.Session.SetInt32(SD.ShoppingCartSession, count - 1);
             await _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Summary()
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            shoppingCartViewModel = new ShoppingCartViewModel()
+            {
+                Order = new Models.Order(),
+                ListCart = await _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value, includeProperties: "ProductAvailability")
+            };
+
+            shoppingCartViewModel.Order.ApplicationUser = await _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == claim.Value);
+
+            foreach (var item in shoppingCartViewModel.ListCart)
+            {
+                shoppingCartViewModel.ProductAvailability = await _unitOfWork.ProductAvailability.GetFirstOrDefault(u => u.ProductId == item.ProductAvailability.ProductId, includeProperties: "Product");
+                item.Price = shoppingCartViewModel.ProductAvailability.Product.Price;
+                shoppingCartViewModel.Order.OrderTotal += (item.Price * item.Quantity);
+            }
+
+            shoppingCartViewModel.Order.Name = shoppingCartViewModel.Order.ApplicationUser.Name;
+            shoppingCartViewModel.Order.PhoneNumber = shoppingCartViewModel.Order.ApplicationUser.PhoneNumber;
+            shoppingCartViewModel.Order.PostalCode = shoppingCartViewModel.Order.ApplicationUser.PostalCode;
+            shoppingCartViewModel.Order.State = shoppingCartViewModel.Order.ApplicationUser.State;
+            shoppingCartViewModel.Order.StreetAdress = shoppingCartViewModel.Order.ApplicationUser.StreetAdress;
+            shoppingCartViewModel.Order.City = shoppingCartViewModel.Order.ApplicationUser.City;
+
+            return View(shoppingCartViewModel);
+        }
+
+        [HttpPost]
+        [ActionName("Summary")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SummaryPost()
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            shoppingCartViewModel.Order.ApplicationUser = await _unitOfWork.ApplicationUser.GetFirstOrDefault(u => u.Id == claim.Value);
+
+            shoppingCartViewModel.ListCart = await _unitOfWork.ShoppingCart.GetAll(c => c.ApplicationUserId == claim.Value, includeProperties: "ProductAvailability");
+
+            shoppingCartViewModel.Order.OrderStatus = SD.StatusApproved;
+            shoppingCartViewModel.Order.ApplicationUserId = claim.Value;
+            shoppingCartViewModel.Order.OrderDate = DateTime.Now;
+            await _unitOfWork.Order.Add(shoppingCartViewModel.Order);
+            await _unitOfWork.Save();
+
+            List<OrderDetails> orderDetailsList = new List<OrderDetails>();
+            foreach(var item in shoppingCartViewModel.ListCart)
+            {
+                shoppingCartViewModel.ProductAvailability = await _unitOfWork.ProductAvailability.GetFirstOrDefault(u => u.ProductId == item.ProductAvailability.ProductId, includeProperties: "Product");
+                item.Price = shoppingCartViewModel.ProductAvailability.Product.Price;
+                OrderDetails orderDetails = new OrderDetails()
+                {
+                    ProductAvailabilityId = item.ProductAvailabilityId,
+                    OrderId = shoppingCartViewModel.Order.Id,
+                    Price = item.Price,
+                    Quantity = item.Quantity
+                };
+
+                shoppingCartViewModel.Order.OrderTotal += (item.Price * item.Quantity);
+                await _unitOfWork.OrderDetails.Add(orderDetails);
+                await _unitOfWork.Save();
+
+            }
+
+            await _unitOfWork.ShoppingCart.RemoveRange(shoppingCartViewModel.ListCart);
+            await _unitOfWork.Save();
+            HttpContext.Session.SetInt32(SD.ShoppingCartSession, 0);
+            return RedirectToAction("OrderConfirmation", "Cart", new { id = shoppingCartViewModel.Order.Id });
+        }
+
+        public IActionResult OrderConfirmation(int id)
+        {
+            return View(id);
         }
     }
 }

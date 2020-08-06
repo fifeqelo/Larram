@@ -11,5 +11,10 @@ namespace Larram.Utility
         public const string Role_Customer = "Customer";
 
         public const string ShoppingCartSession = "ShoppingCartSession";
+
+        public const string StatusApproved = "Approved";
+        public const string StatusInProcess = "InProcess";
+        public const string StatusInShipped = "Shipped";
+        public const string StatusCancelled = "Cancelled";
     }
 }
