@@ -41,19 +41,20 @@
                         <form asp-action="ProductDetails" id="myform">
                             <div class="row">
                                 <div class="col p-2">
-                                    <select name="Size" class="form-control w-50 m-2">
+                                    <select id="selectSize" name="Size" class="form-control w-50 m-2">
                                         <option value="" disabled selected>-Wybierz rozmiar</option>
                                         @foreach (var size in Model.ProductAvailabilities)
                                         {
-                                            <option value="@size.SizeId">@size.Size.Name</option> 
+                                            <option value="@size.SizeId">@size.Size.Name</option>
+
                                         }
                                     </select>
                                 </div>
                             </div>
+                            <label id="selectOptionValidation" class="text-danger" style="display:none;">Wybierz rozmiar.</label>
                             <div class="row">
                                 <div class="col pt-4">
-                                    <a asp-route-id="@Model.Product.Id" onclick="document.getElementById('myform').submit()" class="p-3 border bg-dark text-white" style="font-size:80%;"><i style="font-size:24px" class="mb-1" data-feather="shopping-bag"></i> DODAJ DO KOSZYKA</a>
-                                    <button type="submit" asp-route-id="@Model.Product.Id">TEST</button>
+                                    <button type="submit" class="p-3 border bg-dark text-white" style="font-size:80%;" onclick="return validateSelect()" asp-route-id="@Model.Product.Id"><i style="font-size:24px" class="mb-1" data-feather="shopping-bag"></i> DODAJ DO KOSZYKA</button>
                                 </div>
                             </div>
                         </form>
@@ -61,3 +62,18 @@
                 </div>
             </div>
         </div>
+
+@section Scripts {
+    <script>
+        function validateSelect() {
+            document.getElementById("selectOptionValidation").style.display = "none";
+            var selectedOption = document.getElementById("selectSize").value;
+            if (selectedOption.toString() == "") {
+                document.getElementById("selectOptionValidation").style.display = "block";
+                return false;
+            } else {
+                return true;
+            }
+        }
+    </script>
+}

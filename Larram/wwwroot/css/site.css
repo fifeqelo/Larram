@@ -60,8 +60,8 @@ html {
 
 body {
     /* Margin bottom by footer height */
-    margin-bottom: 170px;
-    margin-top: 88px;
+    margin-bottom: 287.750px;
+    margin-top: 138px;
 }
 
 .footer {
@@ -185,4 +185,9 @@ button {
 
 .modal-body {
     overflow-y: visible !important;
+}
+.centered {
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%);
 }

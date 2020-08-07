@@ -80,11 +80,6 @@ namespace Larram.Areas.Customer.Controllers
                 var claimsIdentity = (ClaimsIdentity)User.Identity;
                 var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
-                if(Size == 0)
-                {
-                    return RedirectToAction(nameof(ShowProducts));
-                }
-
                 var productId = await _unitOfWork.ProductAvailability.GetFirstOrDefault(u => u.ProductId == id && u.SizeId == Size);
 
                 shoppingCart.ProductAvailabilityId = productId.Id;

@@ -3,6 +3,10 @@
     src: url('Quicksand-VariableFont_wght.ttf');
 }
 @font-face {
+    font-family: "RedRose";
+    src: url('RedRose-Light.ttf');
+}
+@font-face {
     font-family: "Roboto";
     src: url('Roboto-Light.ttf');
 }
@@ -13,5 +17,9 @@
 .Roboto {
     font-family: "Roboto";
     font-size: 125%;
+}
+.redRose {
+    font-family: "RedRose";
+    font-size: 300%;
 }
 
