@@ -5,58 +5,104 @@
     var title = "NOWY PRODUKT";
 
 }
-
-    <div class="container text-center Roboto" style="width:100%;">
-        <div class="container d-flex justify-content-end p-0">
-            <a class="text-dark text-right mb-1 mt-2" data-dismiss="modal"><i style="font-size:22px" data-feather="x"></i></a>
-        </div>
-        @if (Model.Product.Id != 0)
-        {
-            title = "EDYCJA";
-        }
-        <h1 class="m-2" style="font-size:150%;"><b>@title</b></h1>
-        <hr />
-        <form asp-action="Upsert" onsubmit="return jQueryAjaxPost(this);" class="mt-2 p-0">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Product.Id" />
-            <div class="container d-flex justify-content-start mt-4">
-                Nazwa:&nbsp;<input asp-for="Product.Name" class="form-control p-1" type="text" style="width:70%; height:70%; border-radius:0;" />
+@if (Model.Product.Id != 0)
+{
+    title = "EDYCJA";
+}
+<div class="container pb-4 Roboto">
+    <div class="container d-flex justify-content-end p-0">
+        <a class="text-dark text-right mb-1 mt-2" data-dismiss="modal"><i style="font-size:22px" data-feather="x"></i></a>
+    </div>
+    <form asp-action="Upsert" onsubmit="return jQueryAjaxPost(this);" class="mt-2 p-0">
+        <input type="hidden" asp-for="Product.Id" />
+        <div class="row text-center">
+            <div class="col-12">
+                <h1 class="m-0" style="font-size:150%;"><b>@title</b></h1>
+                <hr style="width:90%; margin-left:5% !important; margin-right:5% !important; padding:0; margin:0;" />
             </div>
-            <span asp-validation-for="Product.Name" class="text-danger Roboto" style="font-size:80%;"></span>
-            <div class="container d-flex justify-content-start mt-4">
-                Opis:&nbsp;<input asp-for="Product.Description" class="form-control p-1" type="text" style="width:70%; height:70%; border-radius:0;" />
+            <div class="col-12  pt-1 p-1 d-flex justify-content-center">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             </div>
-            <div class="container d-flex justify-content-start mt-4">
-                Płeć:&nbsp;
+            <div class="col-12 p-1 d-flex justify-content-center">
+                <h1 class="m-0 text-left pl-1" style="font-size:80%; width:80%;"><b>Nazwa </b></h1>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+                <input asp-for="Product.Name" class="form-control" style="width:80%;" />
+            </div>
+            <div class="col-12  pt-1 p-1 pb-0 d-flex justify-content-center">
+                <span style="font-size:80%; width:40%;" asp-validation-for="Product.Name" class="m-0 text-left pl-1 text-danger"></span>
+            </div>
+            <div class="col-12 p-1 d-flex justify-content-center">
+                <h1 class="m-0 text-left pl-1" style="font-size:80%; width:80%;"><b>Opis </b></h1>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+                <textarea asp-for="Product.Description" rows="5" cols="15" style="font-size:60%; width:80%; resize:none;" />
+            </div>
+            <div class="col-12 p-1 d-flex justify-content-center">
+                <h1 class="m-0 text-left pl-1" style="font-size:80%; width:80%;"><b>Płeć </b></h1>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
                 @Html.DropDownListFor(m => m.Product.Gender, Model.GenderList, "-Wybierz płeć",
-                new { @class = "form-control" })
+                new { @class = "form-control", @style = "width:80%" })
             </div>
-            <span asp-validation-for="Product.Gender" class="text-danger Roboto" style="font-size:80%;"></span>
-            <div class="container d-flex justify-content-start mt-4">
-                Cena:&nbsp;<input asp-for="Product.Price" class="form-control p-1" type="text" style="width:70%; height:70%; border-radius:0;" />
+            <div class="col-12 pt-1 p-1 pb-0 d-flex justify-content-center">
+                <span style="font-size:80%; width:40%;" asp-validation-for="Product.Gender" class="m-0 text-left pl-1 text-danger"></span>
             </div>
-            <span asp-validation-for="Product.Price" class="text-danger Roboto" style="font-size:80%;"></span>
-            <div class="container d-flex justify-content-start mt-4">
-                Cena promocyjna:&nbsp;<input asp-for="Product.DiscountPrice" class="form-control p-1" type="text" style="width:70%; height:70%; border-radius:0;" />
+            <div class="col-12 p-1 d-flex justify-content-center">
+                <h1 class="m-0 text-left pl-1" style="font-size:80%; width:80%;"><b>Cena </b></h1>
             </div>
-            <span asp-validation-for="Product.DiscountPrice" class="text-danger Roboto" style="font-size:80%;"></span>
+            <div class="col-12 d-flex justify-content-center">
+                <input asp-for="Product.Price" class="form-control" style="width:80%;" />
+            </div>
+            <div class="col-12  pt-1 p-1 pb-0 d-flex justify-content-center">
+                <span style="font-size:80%; width:40%;" asp-validation-for="Product.Price" class="m-0 text-left pl-1 text-danger"></span>
+            </div>
+            <div class="col-12 p-1 d-flex justify-content-center">
+                <h1 class="m-0 text-left pl-1" style="font-size:80%; width:80%;"><b>Cena promocyjna </b></h1>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+                <input asp-for="Product.DiscountPrice" class="form-control" style="width:80%;" />
+            </div>
+            <div class="col-12  pt-1 p-1 pb-0 d-flex justify-content-center">
+                <span style="font-size:80%; width:40%;" asp-validation-for="Product.DiscountPrice" class="m-0 text-left pl-1 text-danger"></span>
+            </div>
+            <div class="col-12 p-1 d-flex justify-content-center">
+                <h1 class="m-0 text-left pl-1" style="font-size:80%; width:80%;"><b>Kolor Hex </b></h1>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+                <input asp-for="Product.HexValue" class="form-control" style="width:80%;" />
+            </div>
+            <div class="col-12  pt-1 p-1 pb-0 d-flex justify-content-center">
+                <span asp-validation-for="Product.HexValue" style="font-size:80%; width:40%;" class="m-0 text-left pl-1 text-danger"></span>
+            </div>
+            <div class="col-12 p-1 d-flex justify-content-center">
+                <h1 class="m-0 text-left pl-1" style="font-size:80%; width:80%;"><b>Zdjęcie </b></h1>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+                <input type="file" style="width:80%; content:'test';" id="uploadBox" multiple class="form-control" />
+            </div>
             <input type="hidden" asp-for="Product.CreatedDate" value="@DateTime.Now" />
-            <div class="container d-flex justify-content-start mt-4">
-                Kategoria:&nbsp;
+            <div class="col-12 p-1 d-flex justify-content-center">
+                <h1 class="m-0 text-left pl-1" style="font-size:80%; width:80%;"><b>Kategoria </b></h1>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
                 @Html.DropDownListFor(m => m.Product.CategoryId, Model.CategoryList, "-Wybierz kategorię",
-                new { @class = "form-control" })
+                new { @class = "form-control", @style = "width:80%" })
             </div>
-            <span asp-validation-for="Product.CategoryId" class="text-danger Roboto" style="font-size:80%;"></span>
-            <div class="container d-flex justify-content-start mt-4">
-                Kolor:&nbsp;
+            <div class="col-12  pt-1 p-1 pb-0 d-flex justify-content-center">
+                <span style="font-size:80%; width:40%;" asp-validation-for="Product.CategoryId" class="m-0 text-left pl-1 text-danger"></span>
+            </div>
+            <div class="col-12 p-1 d-flex justify-content-center">
+                <h1 class="m-0 text-left pl-1" style="font-size:80%; width:80%;"><b>Kolor </b></h1>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
                 @Html.DropDownListFor(m => m.Product.ColorId, Model.ColorList, "-Wybierz kolor",
-                new { @class = "form-control" })
+                new { @class = "form-control", @style = "width:80%" })
             </div>
-            <span asp-validation-for="Product.CategoryId" class="text-danger Roboto" style="font-size:80%;"></span>
-            <div class="container d-flex justify-content-start mt-4">
-                <input type="file" name="files" id="uploadBox" multiple class="form-control" />
+            <div class="col-12  pt-1 p-1 pb-0 d-flex justify-content-center">
+                <span style="font-size:80%; width:40%;" asp-validation-for="Product.ColorId" class="m-0 text-left pl-1 text-danger"></span>
             </div>
-            <div class="d-flex justify-content-center">
+            <div class="col-12 pt-1">
                 @if (Model.Product.Id != 0)
                 {
                     <partial name="_EditAndBackToListButton" model="Model.Product.Id" />
@@ -66,8 +112,9 @@
                     <partial name="_CreateAndBackToListButton" />
                 }
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
+</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

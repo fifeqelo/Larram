@@ -15,9 +15,5 @@ namespace Larram.Models
         [DisplayName("Category Name")]
         [MaxLength(50)]
         public string Name { get; set; }
-
-        [Required(ErrorMessage = "To pole jest wymagane.")]
-        [MaxLength(50)]
-        public string HexValue { get; set; }
     }
 }

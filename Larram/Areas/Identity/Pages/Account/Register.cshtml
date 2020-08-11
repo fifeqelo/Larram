@@ -1,102 +1,159 @@
 ﻿@page
 @model RegisterModel
-@using Larram.Utility 
+@using Larram.Utility
 @{
     ViewData["Title"] = "Register";
 }
 
-<h1>@ViewData["Title"]</h1>
-
-<div class="row">
-    <div class="col-md-4">
-        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h4>Create a new account.</h4>
-            <hr />
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+<div class="container pt-5 Roboto">
+    <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+        <div class="row text-center">
+            <div class="col-12">
+                <h1 class="m-0" style="font-size:150%;"><b>ZAŁÓŻ NOWE KONTO</b></h1>
+                <hr style="width:50%; margin-left:25% !important; margin-right:25% !important;" />
             </div>
-            <div class="form-group">
-                <label asp-for="Input.Name"></label>
-                <input asp-for="Input.Name" class="form-control" />
-                <span asp-validation-for="Input.Name" class="text-danger"></span>
+            <div class="col-12  pt-3 p-2 d-flex justify-content-center">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             </div>
-            <div class="form-group">
-                <label asp-for="Input.StreetAdress"></label>
-                <input asp-for="Input.StreetAdress" class="form-control" />
-                <span asp-validation-for="Input.StreetAdress" class="text-danger"></span>
+            <div class="col-12 p-2 d-flex justify-content-center">
+                <h1 class="m-0 text-left pl-1" style="font-size:80%; width:40%;"><b>E-mail </b></h1>
             </div>
-            <div class="form-group">
-                <label asp-for="Input.City"></label>
-                <input asp-for="Input.City" class="form-control" />
-                <span asp-validation-for="Input.City" class="text-danger"></span>
+            <div class="col-12 d-flex justify-content-center">
+                <input asp-for="Input.Email" class="form-control" style="width:40%;" />
             </div>
-            <div class="form-group">
-                <label asp-for="Input.PostalCode"></label>
-                <input asp-for="Input.PostalCode" class="form-control" />
-                <span asp-validation-for="Input.PostalCode" class="text-danger"></span>
+            <div class="col-12  pt-3 p-2 d-flex justify-content-center">
+                <span style="font-size:80%; width:40%;" asp-validation-for="Input.Email" class="m-0 text-left pl-1 text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Input.State"></label>
-                <input asp-for="Input.State" class="form-control" />
-                <span asp-validation-for="Input.State" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.PhoneNumber"></label>
-                <input asp-for="Input.PhoneNumber" class="form-control" />
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.Password"></label>
-                <input asp-for="Input.Password" class="form-control" />
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.ConfirmPassword"></label>
-                <input asp-for="Input.ConfirmPassword" class="form-control" />
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            @if (User.IsInRole(SD.Role_Admin))
-            {
-                <div class="form-group">
-                    <label asp-for="Input.Role"></label>
-                    @Html.DropDownListFor(m=>m.Input.Role, Model.Input.RolesList, "-Wybierz rolę", new { @class = "form-control"});
-                </div>
-            }
-            <button type="submit" class="btn btn-primary">Register</button>
-        </form>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h4>Use another service to register.</h4>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                            for details on setting up this ASP.NET application to support logging in via external services.
-                        </p>
+            <div class="col-12 d-flex justify-content-center">
+                <div class="row text-center" style="width:58%;">
+                    <div class="col-6 p-2 d-flex justify-content-center">
+                        <h1 class="m-0 text-left pl-1" style="font-size:80%; width:40%;"><b>Imię </b></h1>
                     </div>
+                    <div class="col-6 p-2">
+                        <h1 class="m-0 text-left pl-1" style="font-size:80%; width:40%;"><b>Numer telefonu </b></h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+                <div class="row text-center" style="width:41%;">
+                    <div class="col-6 p-2 d-flex justify-content-center">
+                        <input asp-for="Input.Name" class="form-control" style="width:100%;" />
+                    </div>
+                    <div class="col-6 p-2">
+                        <input asp-for="Input.PhoneNumber" class="form-control" style="width:100%;" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+                <div class="row text-center" style="width:58%;">
+                    <div class="col-6 p-2 d-flex justify-content-center">
+                        <span style="font-size:80%; width:40%;" asp-validation-for="Input.Name" class="m-0 text-left pl-1 text-danger"></span>
+                    </div>
+                    <div class="col-6 p-2">
+                        <span style="font-size:80%; width:40%;" asp-validation-for="Input.PhoneNumber" class="m-0 text-left pl-1 text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+                <div class="row text-center" style="width:58%;">
+                    <div class="col-6 p-2 d-flex justify-content-center">
+                        <h1 class="m-0 text-left pl-1" style="font-size:80%; width:40%;"><b>Miasto </b></h1>
+                    </div>
+                    <div class="col-6 p-2">
+                        <h1 class="m-0 text-left pl-1" style="font-size:80%; width:40%;"><b>Kod pocztowy </b></h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+                <div class="row text-center" style="width:41%;">
+                    <div class="col-6 p-2 d-flex justify-content-center">
+                        <input asp-for="Input.City" class="form-control" style="width:100%;" />
+                    </div>
+                    <div class="col-6 p-2">
+                        <input asp-for="Input.PostalCode" class="form-control" style="width:100%;" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+                <div class="row text-center" style="width:58%;">
+                    <div class="col-6 p-2 d-flex justify-content-center">
+                        <span style="font-size:80%; width:40%;" asp-validation-for="Input.City" class="m-0 text-left pl-1 text-danger"></span>
+                    </div>
+                    <div class="col-6 p-2">
+                        <span style="font-size:80%; width:40%;" asp-validation-for="Input.PostalCode" class="m-0 text-left pl-1 text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 p-2 d-flex justify-content-center">
+                <h1 class="m-0 text-left pl-1" style="font-size:80%; width:40%;"><b>Adres </b></h1>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+                <input asp-for="Input.StreetAdress" class="form-control" style="width:40%;" />
+            </div>
+            <div class="col-12  pt-3 p-2 d-flex justify-content-center">
+                <span style="font-size:80%; width:40%;" asp-validation-for="Input.StreetAdress" class="m-0 text-left pl-1 text-danger"></span>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+                <div class="row text-center" style="width:58%;">
+                    <div class="col-6 p-2 d-flex justify-content-center">
+                        <h1 class="m-0 text-left pl-1" style="font-size:80%; width:40%;"><b>Hasło </b></h1>
+                    </div>
+                    <div class="col-6 p-2">
+                        <h1 class="m-0 text-left pl-1" style="font-size:80%; width:40%;"><b>Potwierdź hasło </b></h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+                <div class="row text-center" style="width:41%;">
+                    <div class="col-6 p-2 d-flex justify-content-center">
+                        <input asp-for="Input.Password" class="form-control" style="width:100%;" />
+                    </div>
+                    <div class="col-6 p-2">
+                        <input asp-for="Input.ConfirmPassword" class="form-control" style="width:100%;" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+                <div class="row text-center" style="width:58%;">
+                    <div class="col-6 p-2 d-flex justify-content-center">
+                        <span style="font-size:80%; width:40%;" asp-validation-for="Input.Password" class="m-0 text-left pl-1 text-danger"></span>
+                    </div>
+                    <div class="col-6 p-2">
+                        <span style="font-size:80%; width:40%;" asp-validation-for="Input.ConfirmPassword" class="m-0 text-left pl-1 text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+                @if (User.IsInRole(SD.Role_Admin))
+                {
+                    <div class="form-group">
+                        <label asp-for="Input.Role"></label>
+                        @Html.DropDownListFor(m => m.Input.Role, Model.Input.RolesList, "-Wybierz rolę", new { @class = "form-control" });
+                    </div>
+                }
+            </div>
+            <div class="col-12 pt-0">
+                <button type="submit" class="p-2 pr-4 pl-4 border bg-dark text-white quickSand" style="font-size:100%;">Zarejestruj się</button>
+            </div>
+            <div class="col-12 pt-4">
+                <h1 class="m-0 pl-1" style="font-size:80%;"><b>Lub</b></h1>
+            </div>
+        </div>
+    </form>
+    <div class="row justify-content-center pt-4 pb-5">
+        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            @foreach (var provider in Model.ExternalLogins)
+            {
+                if (provider.Name == "Facebook")
+                {
+                    <button type="submit" class="p-2 pr-5 pl-5 mr-2 border bg-primary text-white quickSand" style="font-size:100%;" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"><i class="fab fa-facebook"></i> @provider.DisplayName</button>
                 }
                 else
                 {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
+                    <button type="submit" class="p-2 pr-5 pl-5 border text-secondary quickSand" style="font-size:100%;" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"><img src="~/img/new-google-favicon-512.webp" style="width:20px; height:20px;" /> @provider.DisplayName</button>
                 }
             }
-        </section>
+        </form>
     </div>
 </div>
 

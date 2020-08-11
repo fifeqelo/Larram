@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Larram.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Http;
 using Larram.Utility;
+using Larram.DataAccess.Data;
 
 namespace Larram.Areas.Identity.Pages.Account
 {
@@ -24,16 +25,19 @@ namespace Larram.Areas.Identity.Pages.Account
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ApplicationDbContext _db;
 
         public LoginModel(SignInManager<IdentityUser> signInManager, 
             ILogger<LoginModel> logger,
             UserManager<IdentityUser> userManager,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            ApplicationDbContext db)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _unitOfWork = unitOfWork;
+            _db = db;
         }
 
         [BindProperty]
@@ -56,7 +60,7 @@ namespace Larram.Areas.Identity.Pages.Account
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
-            [Display(Name = "Remember me?")]
+            [Display(Name = "Pamiętaj mnie")]
             public bool RememberMe { get; set; }
         }
 
@@ -80,12 +84,14 @@ namespace Larram.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var user = _userManager.FindByEmailAsync(Input.Email);
                 if (result.Succeeded)
                 {
                     var count = _unitOfWork.ShoppingCart.GetAllNotAsync(u => u.ApplicationUser.Email == Input.Email).ToList().Count();
@@ -94,6 +100,14 @@ namespace Larram.Areas.Identity.Pages.Account
 
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
+                }
+                if (user.Result != null)
+                {
+                    if(user.Result.EmailConfirmed == false)
+                    {
+                        ModelState.AddModelError(string.Empty, "Musisz potwierdzić email");
+                        return Page();
+                    }
                 }
                 if (result.RequiresTwoFactor)
                 {
@@ -106,7 +120,7 @@ namespace Larram.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Email lub hasło jest nieprawidłowe");
                     return Page();
                 }
             }

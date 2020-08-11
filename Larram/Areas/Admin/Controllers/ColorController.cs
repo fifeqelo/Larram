@@ -20,6 +20,9 @@ namespace Larram.Areas.Admin.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly ApplicationDbContext _context;
 
+        [BindProperty]
+        public Color color { get; set; }
+
         public ColorController(IUnitOfWork unitOfWork, ApplicationDbContext context)
         {
             _unitOfWork = unitOfWork;
@@ -28,8 +31,8 @@ namespace Larram.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(string orderBy, string search, string currentFilter, int? page)
         {
-            ViewBag.CurrentOrderBy = orderBy;
-            ViewBag.SortParam = orderBy;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(orderBy) ? "name_desc" : "";
+            ViewData["CurrentSort"] = orderBy;
 
             if (search != null)
             {
@@ -40,7 +43,7 @@ namespace Larram.Areas.Admin.Controllers
                 search = currentFilter;
             }
 
-            ViewBag.CurrentFilter = search;
+            ViewData["CurrentFilter"] = search;
 
             var allObj = await _unitOfWork.Color.GetAll();
             if (!String.IsNullOrEmpty(search))
@@ -49,23 +52,22 @@ namespace Larram.Areas.Admin.Controllers
             }
             switch (orderBy)
             {
-                case "name_asc":
-                    allObj = allObj.OrderBy(u => u.Name);
-                    break;
                 case "name_desc":
                     allObj = allObj.OrderByDescending(u => u.Name);
+                    break;
+                default:
+                    allObj = allObj.OrderBy(u => u.Name);
                     break;
             }
             int pageSize = 10;
             return View(PaginatedList<Color>.Create(allObj, page ?? 1, pageSize));
-            //return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "_ViewAll", (PaginatedList<Color>.Create(allObj, page ?? 1, pageSize)) });
-
         }
 
         [PopupHelper.NoDirectAccess]
         public async Task<IActionResult> Delete(int? id)
         {
-            if(id == null)
+            Color color = new Color();
+            if (id == null)
             {
                 return NotFound();
             }
@@ -79,9 +81,9 @@ namespace Larram.Areas.Admin.Controllers
 
         [HttpPost, ActionName("Delete")] 
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed()
         {
-            var objToDelete = await _unitOfWork.Color.Get(id);
+            var objToDelete = await _unitOfWork.Color.Get(color.Id);
             await _unitOfWork.Color.Remove(objToDelete);
             await _unitOfWork.Save();
             return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "Index", _unitOfWork.Color.GetAll()) });
@@ -107,7 +109,7 @@ namespace Larram.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert([Bind("Id, Name, HexValue")] Color color)
+        public async Task<IActionResult> Upsert()
         {
             if (ModelState.IsValid)
             {

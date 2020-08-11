@@ -16,6 +16,7 @@ using Larram.DataAccess.Repository.IRepository;
 using Larram.DataAccess.Repository;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Larram.Utility;
+using Microsoft.Extensions.Options;
 
 namespace Larram
 {
@@ -37,7 +38,15 @@ namespace Larram
             services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddTransient<IEmailSender, EmailSender>(i =>
+                new EmailSender(
+                Configuration["EmailSender:Host"],
+                Configuration.GetValue<int>("EmailSender:Port"),
+                Configuration.GetValue<bool>("EmailSender:EnableSSL"),
+                Configuration["EmailSender:UserName"],
+                Configuration["EmailSender:Password"]
+                 )
+            );
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
             services.ConfigureApplicationCookie(options =>
@@ -83,6 +92,7 @@ namespace Larram
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.ApplicationServices.GetRequiredService<IOptions<IdentityOptions>>().Value.SignIn.RequireConfirmedAccount = true;
 
             app.UseRouting();
 

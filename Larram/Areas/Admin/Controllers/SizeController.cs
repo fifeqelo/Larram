@@ -19,6 +19,8 @@ namespace Larram.Areas.Admin.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ApplicationDbContext _context;
+        [BindProperty]
+        public Size size { get; set; }
 
         public SizeController(IUnitOfWork unitOfWork, ApplicationDbContext context)
         {
@@ -28,8 +30,8 @@ namespace Larram.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(string orderBy, string search, string currentFilter, int? page)
         {
-            ViewBag.CurrentOrderBy = orderBy;
-            ViewBag.SortParam = orderBy;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(orderBy) ? "name_desc" : "";
+            ViewData["CurrentSort"] = orderBy;
 
             if (search != null)
             {
@@ -40,7 +42,7 @@ namespace Larram.Areas.Admin.Controllers
                 search = currentFilter;
             }
 
-            ViewBag.CurrentFilter = search;
+            ViewData["CurrentFilter"] = search;
 
             var allObj = await _unitOfWork.Size.GetAll();
             if (!String.IsNullOrEmpty(search))
@@ -49,37 +51,22 @@ namespace Larram.Areas.Admin.Controllers
             }
             switch (orderBy)
             {
-                case "name_asc":
-                    allObj = allObj.OrderBy(u => u.Name);
-                    break;
                 case "name_desc":
                     allObj = allObj.OrderByDescending(u => u.Name);
+                    break;
+                default:
+                    allObj = allObj.OrderBy(u => u.Name);
                     break;
             }
             int pageSize = 10;
             return View(PaginatedList<Size>.Create(allObj, page ?? 1, pageSize));
-            //return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "_ViewAll", (PaginatedList<Category>.Create(allObj, page ?? 1, pageSize)) });
 
-        }
-
-        [PopupHelper.NoDirectAccess]
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var objDetails = await _unitOfWork.Size.Get(id);
-            if (objDetails == null)
-            {
-                return NotFound();
-            }
-            return View(objDetails);
         }
 
         [PopupHelper.NoDirectAccess]
         public async Task<IActionResult> Delete(int? id)
         {
+            Size size = new Size();
             if (id == null)
             {
                 return NotFound();
@@ -94,9 +81,9 @@ namespace Larram.Areas.Admin.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed()
         {
-            var objToDelete = await _unitOfWork.Size.Get(id);
+            var objToDelete = await _unitOfWork.Size.Get(size.Id);
             await _unitOfWork.Size.Remove(objToDelete);
             await _unitOfWork.Save();
             return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "Index", _unitOfWork.Size.GetAll()) });
@@ -122,7 +109,7 @@ namespace Larram.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert([Bind("Id, Name")] Size size)
+        public async Task<IActionResult> Upsert()
         {
             if (ModelState.IsValid)
             {

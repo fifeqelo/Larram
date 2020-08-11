@@ -23,7 +23,6 @@ namespace Larram.DataAccess.Repository
             if(objFromDb != null)
             {
                 objFromDb.Name = Color.Name;
-                objFromDb.HexValue = Color.HexValue;
                 _db.SaveChanges();
             }
         }

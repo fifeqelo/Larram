@@ -24,6 +24,8 @@ namespace Larram.Areas.Admin.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _hostEnviroment;
+        [BindProperty]
+        public ProductViewModel productViewModel { get; set; }
 
         public ProductController(IUnitOfWork unitOfWork, ApplicationDbContext context, IWebHostEnvironment hostEnvironment)
         {
@@ -34,8 +36,12 @@ namespace Larram.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(string orderBy, string search, string currentFilter, int? page)
         {
-            ViewBag.CurrentOrderBy = orderBy;
-            ViewBag.SortParam = orderBy;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(orderBy) ? "name_desc" : "";
+            ViewData["CategorySortParm"] = orderBy == "Category" ? "category_desc" : "Category";
+            ViewData["PriceSortParm"] = orderBy == "Price" ? "price_desc" : "Price";
+            ViewData["DiscountPriceSortParm"] = orderBy == "DiscountPrice" ? "discountPrice_desc" : "DiscountPrice";
+            ViewData["DateSortParm"] = orderBy == "Date" ? "date_desc" : "Date";
+            ViewData["CurrentSort"] = orderBy;
 
             if (search != null)
             {
@@ -46,7 +52,7 @@ namespace Larram.Areas.Admin.Controllers
                 search = currentFilter;
             }
 
-            ViewBag.CurrentFilter = search;
+            ViewData["CurrentFilter"] = search;
 
             var allObj = await _unitOfWork.Product.GetAll(includeProperties:"Category,Color");
             if (!String.IsNullOrEmpty(search))
@@ -55,17 +61,39 @@ namespace Larram.Areas.Admin.Controllers
             }
             switch (orderBy)
             {
-                case "name_asc":
-                    allObj = allObj.OrderBy(u => u.Name);
-                    break;
                 case "name_desc":
                     allObj = allObj.OrderByDescending(u => u.Name);
+                    break;
+                case "category_desc":
+                    allObj = allObj.OrderByDescending(u => u.Category.Name);
+                    break;
+                case "Category":
+                    allObj = allObj.OrderBy(u => u.Category.Name);
+                    break;
+                case "price_desc":
+                    allObj = allObj.OrderByDescending(u => u.Price);
+                    break;
+                case "Price":
+                    allObj = allObj.OrderBy(u => u.Price);
+                    break;
+                case "discountPrice_desc":
+                    allObj = allObj.OrderByDescending(u => u.DiscountPrice);
+                    break;
+                case "DiscountPrice":
+                    allObj = allObj.OrderBy(u => u.DiscountPrice);
+                    break;
+                case "date_desc":
+                    allObj = allObj.OrderByDescending(u => u.CreatedDate);
+                    break;
+                case "Date":
+                    allObj = allObj.OrderBy(u => u.CreatedDate);
+                    break;
+                default:
+                    allObj = allObj.OrderBy(u => u.Name);
                     break;
             }
             int pageSize = 10;
             return View(PaginatedList<Product>.Create(allObj, page ?? 1, pageSize));
-            //return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "_ViewAll", (PaginatedList<Product>.Create(allObj, page ?? 1, pageSize)) });
-
         }
 
         [PopupHelper.NoDirectAccess]
@@ -86,7 +114,7 @@ namespace Larram.Areas.Admin.Controllers
         [PopupHelper.NoDirectAccess]
         public async Task<IActionResult> Delete(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -148,7 +176,7 @@ namespace Larram.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert([Bind("Product, CategoryList, Gender, ColorList")] ProductViewModel productViewModel)
+        public async Task<IActionResult> Upsert()
         {
             if (ModelState.IsValid)
             {

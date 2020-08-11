@@ -5,15 +5,7 @@
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">
-                        <div style="width:100%; display:flex;">
-                            <div style="width:53.5%; text-align:end">
-                                Nazwa
-                            </div>
-                            <div style="width:46.5%; text-align:end">
-                                <a asp-action="Index" asp-route-orderBy="name_asc" asp-route-currentFilter="@ViewBag.CurrentFilter"><i style="font-size:22px;" class="text-light" data-feather="chevron-up"></i></a>
-                                <a asp-action="Index" asp-route-orderBy="name_desc" asp-route-currentFilter="@ViewBag.CurrentFilter"><i style="font-size:22px;" class="text-light" data-feather="chevron-down"></i></a>
-                            </div>
-                        </div>
+                    <a class="sortLink" asp-action="Index" asp-route-orderBy="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Nazwa</a>
                     </th>
                     <th scope="col">Akcje</th>
                 </tr>

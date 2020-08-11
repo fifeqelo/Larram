@@ -45,6 +45,10 @@ namespace Larram.Models
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
 
+        [Required(ErrorMessage = "To pole jest wymagane.")]
+        [MaxLength(50)]
+        public string HexValue { get; set; }
+
         public string ImageUrl { get; set; }
     }
     public enum Gender

@@ -16,10 +16,10 @@
                 {
                     var today = DateTime.Now;
                     var lockout = user.LockoutEnd;
-                    var lockunlock = "ZABLOKUJ <i style='font-size:14px' data-feather = 'lock'></i>";
+                    var lockunlock = "<div class='container p-2 bg-danger'>ZABLOKUJ <i style='font-size:14px' data-feather = 'lock'></i></div>";
                     if (lockout > today)
                     {
-                       lockunlock = "ODBLOKUJ <i style='font-size:14px' data-feather = 'unlock'></i>";
+                        lockunlock = "<div class='container p-2 bg-success'>ODBLOKUJ <i style='font-size:14px' data-feather = 'unlock'></i></div>";
                     }
                     <tr>
                         <td style="width:30%;">@user.Name</td>
@@ -28,9 +28,7 @@
                         <td style="width:10%;">@user.Role</td>
                         <td style="width:10%;">
                             <a onclick="showInPopup('@Url.Action("LockUnlock","User",new {id=user.Id},Context.Request.Scheme)')" class="text-light" style="font-size:55%">
-                                <div class="container p-2 bg-dark">
                                     @Html.Raw(lockunlock)
-                                </div>
                             </a>
                         </td>
                     </tr>

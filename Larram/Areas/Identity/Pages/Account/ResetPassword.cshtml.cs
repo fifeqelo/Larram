@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,10 +53,12 @@ namespace Larram.Areas.Identity.Pages.Account
             }
             else
             {
-                Input = new InputModel
+                Input = new InputModel()
                 {
+
                     Code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code))
                 };
+
                 return Page();
             }
         }

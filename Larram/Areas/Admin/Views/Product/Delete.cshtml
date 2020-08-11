@@ -3,21 +3,21 @@
     ViewData["Title"] = "Delete";
     Layout = null;
 }
-    <div class="container text-center mb-4" style="width:100%;">
+<div class="container pb-5 Roboto">
+    <form asp-action="Delete" onsubmit="return jQueryAjaxPost(this);" class="m-0 p-0">
         <div class="container d-flex justify-content-end p-0">
-            <a class="text-dark text-right mb-1 mt-2" asp-action="Index"><i style="font-size:22px" data-feather="x"></i></a>
+            <a class="text-dark text-right mb-1 mt-2" data-dismiss="modal"><i style="font-size:22px" data-feather="x"></i></a>
         </div>
-        <div class="d-flex justify-content-center">
-            <i style="font-size:64px" class="ml-2 mt-4 mr-4 mb-2" data-feather="alert-triangle"></i>
-            <h2 class="Roboto mt-4" style="font-size:150%;"><b>Czy na pewno chcesz <br /> usunąć ten produkt?</b></h2>
-        </div>
-        <form asp-action="Delete" onsubmit="return jQueryAjaxPost(this);" class="m-0 p-0">
-            <div class="d-flex justify-content-center">
-                <input type="hidden" asp-for="Id" />
-                <button type="submit" class="text-light button-managment bg-danger Roboto ml-4 pt-2 pr-0 mr-3 pl-3 justify-content-end" style="width:40%; padding:0.5rem; height:50%; font-size:100%;">
-                    USUŃ <i style="font-size:18px" data-feather="check-circle"></i>
-                </button>
+        <div class="row text-center">
+            <div class="col-12 pb-4">
+                <i style="font-size:64px" class="ml-2 mt-4 mr-4 mb-2" data-feather="alert-triangle"></i>
+                <h2 class="Roboto mt-4" style="font-size:150%;"><b>Czy na pewno chcesz <br /> usunąć ten produkt?</b></h2>
             </div>
-        </form>
+            <input type="hidden" asp-for="Id" />
+            <div class="col-12 d-flex justify-content-center">
+                <button type="submit" class="p-2 pr-4 pl-4 border bg-danger text-white Roboto" style="font-size:100%;">Usuń <i style="font-size:18px" data-feather="delete"></i></button>
+            </div>
+        </div>
+    </form>
+</div>
 
-    </div>

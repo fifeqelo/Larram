@@ -29,7 +29,7 @@
                             <div class="col p-2">
                                 @foreach (var product in Model.Products)
                                 {
-                                    <a asp-area="Customer" asp-controller="Home" asp-action="ProductDetails" asp-route-id="@product.Id"><div class="d-inline p-1 pl-4 m-2 border" style="background-color:@product.Color.HexValue"></div></a>
+                                    <a asp-area="Customer" asp-controller="Home" asp-action="ProductDetails" asp-route-id="@product.Id"><div class="d-inline p-1 pl-4 m-2 border" style="background-color:@product.HexValue"></div></a>
                                 }
                             </div>
                         </div>

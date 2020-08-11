@@ -33,6 +33,7 @@ namespace Larram.DataAccess.Repository
                 objFromDb.DiscountPrice = product.DiscountPrice;
                 objFromDb.CategoryId = product.CategoryId;
                 objFromDb.ColorId = product.ColorId;
+                objFromDb.HexValue = product.HexValue;
                 _db.SaveChanges();
             }
         }

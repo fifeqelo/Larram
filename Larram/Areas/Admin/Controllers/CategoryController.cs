@@ -20,6 +20,9 @@ namespace Larram.Areas.Admin.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly ApplicationDbContext _context;
 
+        [BindProperty]
+        public Category category { get; set; }
+
         public CategoryController(IUnitOfWork unitOfWork, ApplicationDbContext context)
         {
             _unitOfWork = unitOfWork;
@@ -28,8 +31,9 @@ namespace Larram.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(string orderBy, string search, string currentFilter, int? page)
         {
-            ViewBag.CurrentOrderBy = orderBy;
-            ViewBag.SortParam = orderBy;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(orderBy) ? "name_desc" : "";
+            ViewData["CurrentSort"] = orderBy;
+
 
             if (search != null)
             {
@@ -40,7 +44,7 @@ namespace Larram.Areas.Admin.Controllers
                 search = currentFilter;
             }
 
-            ViewBag.CurrentFilter = search;
+            ViewData["CurrentFilter"] = search;
 
             var allObj = await _unitOfWork.Category.GetAll();
             if (!String.IsNullOrEmpty(search))
@@ -49,23 +53,23 @@ namespace Larram.Areas.Admin.Controllers
             }
             switch (orderBy)
             {
-                case "name_asc":
-                    allObj = allObj.OrderBy(u => u.Name);
-                    break;
                 case "name_desc":
                     allObj = allObj.OrderByDescending(u => u.Name);
+                    break;
+                default:
+                    allObj = allObj.OrderBy(u => u.Name);
                     break;
             }
             int pageSize = 10;
             return View(PaginatedList<Category>.Create(allObj, page ?? 1, pageSize));
-            //return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "_ViewAll", (PaginatedList<Category>.Create(allObj, page ?? 1, pageSize)) });
 
         }
 
         [PopupHelper.NoDirectAccess]
         public async Task<IActionResult> Delete(int? id)
         {
-            if(id == null)
+            Category category = new Category();
+            if (id == null)
             {
                 return NotFound();
             }
@@ -79,9 +83,9 @@ namespace Larram.Areas.Admin.Controllers
 
         [HttpPost, ActionName("Delete")] 
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed()
         {
-            var objToDelete = await _unitOfWork.Category.Get(id);
+            var objToDelete = await _unitOfWork.Category.Get(category.Id);
             await _unitOfWork.Category.Remove(objToDelete);
             await _unitOfWork.Save();
             return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "Index", _unitOfWork.Category.GetAll()) });
@@ -107,7 +111,7 @@ namespace Larram.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert([Bind("Id, Name")] Category category)
+        public async Task<IActionResult> Upsert()
         {
             if (ModelState.IsValid)
             {
