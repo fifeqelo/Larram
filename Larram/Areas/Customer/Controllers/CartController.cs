@@ -56,7 +56,7 @@ namespace Larram.Areas.Admin.Controllers
         public async Task<IActionResult> Plus(int id)
         {
             var item = await _unitOfWork.ShoppingCart.GetFirstOrDefault(u => u.Id == id, includeProperties: "ProductAvailability");
-            if(item.Quantity >= item.ProductAvailability.Quantity)
+            if(item.Quantity >= 10)
             {
                 return RedirectToAction(nameof(Index));
             }

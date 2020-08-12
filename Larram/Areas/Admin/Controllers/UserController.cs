@@ -29,8 +29,8 @@ namespace Larram.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(string orderBy, string search, string currentFilter, int? page)
         {
-            ViewBag.CurrentOrderBy = orderBy;
-            ViewBag.SortParam = orderBy;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(orderBy) ? "name_desc" : "";
+            ViewData["CurrentSort"] = orderBy;
 
             if (search != null)
             {
@@ -41,20 +41,37 @@ namespace Larram.Areas.Admin.Controllers
                 search = currentFilter;
             }
 
-            ViewBag.CurrentFilter = search;
+            ViewData["CurrentFilter"] = search;
 
-            var userList = await _context.ApplicationUsers.ToListAsync();
+            var users = from s in _context.ApplicationUsers
+                           select s;
+
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                users = users.Where(u => u.Name.Contains(search) ||
+                u.Email.Contains(search) || u.PhoneNumber.Contains(search));
+            }
             var userRole = await _context.UserRoles.ToListAsync();
             var roles = await _context.Roles.ToListAsync();
-            foreach(var user in userList)
+            foreach(var user in users)
             {
                 var roleId = userRole.FirstOrDefault(u => u.UserId == user.Id).RoleId;
                 user.Role = roles.FirstOrDefault(u => u.Id == roleId).Name;
             }
 
+            switch (orderBy)
+            {
+                case "name_desc":
+                    users = users.OrderByDescending(u => u.Name);
+                    break;
+                default:
+                    users = users.OrderBy(u => u.Name);
+                    break;
+            }
 
             int pageSize = 10;
-            return View(PaginatedList<ApplicationUser>.Create(userList, page ?? 1, pageSize));
+            return View(PaginatedList<ApplicationUser>.Create(users, page ?? 1, pageSize));
         }
 
         [PopupHelper.NoDirectAccess]

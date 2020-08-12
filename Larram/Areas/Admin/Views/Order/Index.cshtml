@@ -26,67 +26,78 @@
             break;
     }
 }
-
-<div class="container p-5">
-    <div class="container mb-4 ml-0 p-0">
-        <h1 class="Roboto text-center m-0" style="font-size:200%;"><b>ZARZĄDZANIE ZAMÓWIENIAMI</b></h1>
-        <hr class="m-0" />
-        <div class="d-flex justify-content-between p-0">
-            <div class="justify-content-start mt-3 Roboto" style="width:20%; font-size:70%; display:inline;">
-                <form asp-controller="Color" asp-action="Index" method="get" style="display:inline;">
+    <div class="container p-5">
+        <div class="row">
+            <div class="col-12">
+                @if (User.IsInRole(Larram.Utility.SD.Role_Customer))
+                {
+                    <h1 class="text-center Roboto" style="font-size:200%;"><b>TWOJE ZAMÓWENIA</b></h1>
+                }
+                else
+                {
+                    <h1 class="text-center Roboto" style="font-size:200%;"><b>ZARZĄDZANIE ZAMÓWIENIAMI</b></h1>
+                }
+                <hr class="m-0" />
+            </div>
+            <div class="col-6 pt-2 d-flex justify-content-start" style="width:20%; font-size:80%;">
+                <form asp-controller="Order" asp-action="Index" method="get" style="display:inline;">
                     <p>
-                        <input class="form-control Roboto" type="text" value="" name="search" placeholder="Szukaj..." style="width:70%; border-radius:0;" />
+                        <input class="form-control Roboto" type="text" value="@ViewData["CurrentFilter"]" name="search" placeholder="Szukaj..." style="width:70%; border-radius:0;" />
                     </p>
-                    <a asp-action="Index" class="text-dark" style="font-size:120%;">Wyczyść filtry</a>
+                    <a asp-action="Index" class="text-dark pl-1" style="font-size:120%;">Wyczyść filtry</a>
                 </form>
             </div>
-            <div class="text-light button-managment text-light Roboto ml-0 pt-0 pr-0 mr-0 pl-0 justify-content-end" style="font-size:100%; width:auto;">
+            <div class="col-6 pt-2 pb-5 d-flex justify-content-end" style="font-size:90%;">
                 <ul class="list-group list-group-horizontal-sm" style="list-style-type: none;">
-                    <a  class="text-light" asp-controller="Order"
-                       asp-action="Index" asp-route-status="inprocess">
-                        <li class="p-2 border border-secondary @inprocess">In Process</li>
+                    <a class="text-light" asp-controller="Order"
+                       asp-action="Index" asp-route-status="inprocess" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                        <li class="p-2 border border-secondary @inprocess">W trakcie</li>
                     </a>
                     <a class="text-light" asp-controller="Order"
-                       asp-action="Index" asp-route-status="completed">
-                        <li class="p-2 border border-secondary @completed">Completed</li>
+                       asp-action="Index" asp-route-status="completed" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                        <li class="p-2 border border-secondary @completed">Zakończone</li>
                     </a>
                     <a class="text-light" asp-controller="Order"
-                       asp-action="Index" asp-route-status="rejected">
-                        <li class="p-2 border border-secondary @rejected">Rejected</li>
+                       asp-action="Index" asp-route-status="rejected" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                        <li class="p-2 border border-secondary @rejected">Anulowane</li>
                     </a>
                     <a class="text-light" asp-controller="Order"
-                       asp-action="Index" asp-route-status="all">
-                        <li class="p-2 border border-secondary @all">All</li>
+                       asp-action="Index" asp-route-status="all" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                        <li class="p-2 border border-secondary @all">Wszystkie</li>
                     </a>
                 </ul>
             </div>
-        </div>
-        <div id="view-all">
-            <partial name="_ViewAll" />
-        </div>
-        @{
-            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-        }
-        <div class="d-flex justify-content-center">
-            <a asp-action="Index"
-               asp-route-orderBy="@ViewBag.CurrentOrderBy"
-               asp-route-page="@(Model.PageIndex - 1)"
-               asp-route-currentFilter="@ViewBag.CurrentFilter"
-               class="btn btn-default p-1 text-light button-managment bg-dark Roboto @prevDisabled" style="width:15%; border-radius:0; font-size:110%;">
-                <i style="font-size:21px" data-feather="arrow-left"></i> Poprzednia
-            </a>
-            <a asp-action="Index"
-               asp-route-orderBy="@ViewBag.CurrentOrderBy"
-               asp-route-page="@(Model.PageIndex + 1)"
-               asp-route-currentFilter="@ViewBag.CurrentFilter"
-               class="btn btn-default p-1 text-light button-managment bg-dark Roboto @nextDisabled" style="width:15%;  border-radius:0; font-size:110%;">
-                Następna <i style="font-size:21px" data-feather="arrow-right"></i>
-            </a>
+            <div class="col-12">
+                <div id="view-all">
+                    <partial name="_ViewAll" />
+                </div>
+            </div>
+            @{
+                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+            }
+            <div class="col-6 d-flex justify-content-end pt-4">
+                <a asp-action="Index"
+                   asp-route-orderBy="@ViewData["CurrentSort"]"
+                   asp-route-page="@(Model.PageIndex - 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-status="@ViewData["CurrentStatusSort"]"
+                   class="btn btn-default p-2 pl-4 pr-4 border bg-dark text-white Roboto @prevDisabled" style="font-size:110%;">
+                    <i style="font-size:21px" data-feather="arrow-left"></i> Poprzednia
+                </a>
+            </div>
+            <div class="col-6 d-flex justify-content-start pt-4">
+                <a asp-action="Index"
+                   asp-route-orderBy="@ViewData["CurrentSort"]"
+                   asp-route-page="@(Model.PageIndex + 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   asp-route-status="@ViewData["CurrentStatusSort"]"
+                   class="btn btn-default p-2 pl-4 pr-4 border bg-dark text-white Roboto @nextDisabled" style="font-size:110%;">
+                    Następna <i style="font-size:21px" data-feather="arrow-right"></i>
+                </a>
+            </div>
         </div>
     </div>
-</div>
-
 @section Scripts{
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

@@ -5,32 +5,41 @@
     var title = "NOWA DOSTĘPNOŚĆ";
 
 }
-
-    <div class="container text-center Roboto" style="width:100%;">
+    <div class="container pb-4 Roboto">
         <div class="container d-flex justify-content-end p-0">
             <a class="text-dark text-right mb-1 mt-2" data-dismiss="modal"><i style="font-size:22px" data-feather="x"></i></a>
         </div>
-        @if (Model.ProductAvailability.Id != 0)
-        {
-            title = "EDYCJA";
-        }
-        <h1 class="m-2" style="font-size:150%;"><b>@title</b></h1>
-        <hr />
         <form asp-action="Upsert" onsubmit="return jQueryAjaxPost(this);" class="mt-2 p-0">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ProductAvailability.Id" />
-                <input type="hidden" asp-for="ProductAvailability.ProductId" value="@ViewBag.ProductId" />
-                <div class="container d-flex justify-content-start mt-4">
-                    Rozmiar:&nbsp;
+            <input type="hidden" asp-for="ProductAvailability.ProductId" value="@Model.Product.Id" />
+            <div class="row text-center">
+                <div class="col-12">
+                    <h1 class="m-0" style="font-size:150%;"><b>@title</b></h1>
+                    <hr style="width:90%; margin-left:5% !important; margin-right:5% !important; padding:0; margin:0;" />
+                </div>
+                <div class="col-12  pt-1 p-1 d-flex justify-content-center">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                </div>
+                <div class="col-12 p-1 d-flex justify-content-center">
+                    <h1 class="m-0 text-left pl-1" style="font-size:80%; width:80%;"><b>Rozmiar </b></h1>
+                </div>
+                <div class="col-12 d-flex justify-content-center">
                     @Html.DropDownListFor(m => m.ProductAvailability.SizeId, Model.SizeList, "-Wybierz rozmiar",
-                    new { @class = "form-control" })
+                    new { @class = "form-control", @style = "width:80%" })
                 </div>
-                <span asp-validation-for="ProductAvailability.Size" class="text-danger Roboto" style="font-size:80%;"></span>
-                <div class="container d-flex justify-content-start mt-4">
-                    Ilość:&nbsp;<input asp-for="ProductAvailability.Quantity" class="form-control p-1" type="text" style="width:70%; height:70%; border-radius:0;" />
+                <div class="col-12  pt-1 p-1 pb-0 d-flex justify-content-center">
+                    <span style="font-size:80%; width:40%;" asp-validation-for="ProductAvailability.Size" class="m-0 text-left pl-1 text-danger"></span>
                 </div>
-                <span asp-validation-for="ProductAvailability.Quantity" class="text-danger Roboto" style="font-size:80%;"></span>
-                <div class="d-flex justify-content-center">
+                <div class="col-12 p-1 d-flex justify-content-center">
+                    <h1 class="m-0 text-left pl-1" style="font-size:80%; width:80%;"><b>Ilość </b></h1>
+                </div>
+                <div class="col-12 d-flex justify-content-center">
+                    <input asp-for="ProductAvailability.Quantity" class="form-control" style="width:80%;" />
+                </div>
+                <div class="col-12  pt-1 p-1 pb-0 d-flex justify-content-center">
+                    <span style="font-size:80%; width:40%;" asp-validation-for="ProductAvailability.Quantity" class="m-0 text-left pl-1 text-danger"></span>
+                </div>
+                <div class="col-12 pt-1">
                     @if (Model.ProductAvailability.Id != 0)
                     {
                         <partial name="_EditAndBackToListButton" model="Model.ProductAvailability.Id" />
@@ -40,7 +49,8 @@
                         <partial name="_CreateAndBackToListButton" />
                     }
                 </div>
-</form>
+            </div>
+        </form>
     </div>
 
 @section Scripts {

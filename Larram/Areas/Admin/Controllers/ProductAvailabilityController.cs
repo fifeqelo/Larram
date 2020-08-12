@@ -22,64 +22,45 @@ namespace Larram.Areas.Admin.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly ApplicationDbContext _context;
 
+        [BindProperty]
+        public ProductAvailabilityViewModel productAvailabilityViewModel { get; set; }
+
         public ProductAvailabilityController(IUnitOfWork unitOfWork, ApplicationDbContext context)
         {
             _unitOfWork = unitOfWork;
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string productName, int productId,string orderBy, string search, string currentFilter, int? page)
+        public async Task<IActionResult> Index(int? productId,string orderBy, int? page = 1)
         {
-            ViewBag.CurrentOrderBy = orderBy;
-            ViewBag.SortParam = orderBy;
-            ViewBag.ProductName = productName;
-            ViewBag.ProductId = productId;
-
-
-            if (search != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                search = currentFilter;
-            }
-
-            ViewBag.CurrentFilter = search;
-
-            var allObj = await _unitOfWork.ProductAvailability.GetAll(filter: n => n.ProductId == productId, includeProperties:"Product,Size");
-            if (!String.IsNullOrEmpty(search))
-            {
-                //allObj = await _unitOfWork.ProductAvailability.GetAll(filter: u => u.Name.Contains(search));
-            }
-           /* switch (orderBy)
-            {
-                case "name_asc":
-                    allObj = allObj.OrderBy(u => u.Name);
-                    break;
-                case "name_desc":
-                    allObj = allObj.OrderByDescending(u => u.Name);
-                    break;
-            }*/
-            int pageSize = 10;
-            return View(PaginatedList<ProductAvailability>.Create(allObj, page ?? 1, pageSize));
-            //return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "_ViewAll", (PaginatedList<ProductAvailability>.Create(allObj, page ?? 1, pageSize)) });
-
-        }
-
-        [PopupHelper.NoDirectAccess]
-        public async Task<IActionResult> Details(int? id)
-        {
-            if(id == null)
+            ViewData["QuantitySortParm"] = String.IsNullOrEmpty(orderBy) ? "quantity_desc" : "";
+            ViewData["CurrentSort"] = orderBy;
+            ViewData["productId"] = productId;
+            if(productId == null)
             {
                 return NotFound();
             }
-            var objDetails = await _unitOfWork.ProductAvailability.GetFirstOrDefault(d => d.Id == id, includeProperties:"Product,Size");
-            if(objDetails == null)
+
+            productAvailabilityViewModel = new ProductAvailabilityViewModel()
+            {
+                Product = await _unitOfWork.Product.GetFirstOrDefault(u => u.Id == productId),
+                ProductAvailabilities = await _unitOfWork.ProductAvailability.GetAll(u => u.ProductId == productId, includeProperties: "Size"),
+            };
+            if(productAvailabilityViewModel.Product == null)
             {
                 return NotFound();
             }
-            return View(objDetails);
+            switch (orderBy)
+            {
+                case "quantity_desc":
+                    productAvailabilityViewModel.ProductAvailabilities = productAvailabilityViewModel.ProductAvailabilities.OrderByDescending(u => u.Quantity);
+                    break;
+                default:
+                    productAvailabilityViewModel.ProductAvailabilities = productAvailabilityViewModel.ProductAvailabilities.OrderBy(u => u.Quantity);
+                    break;
+            }
+            int pageSize = 3;
+            return View(PaginatedList<ProductAvailability>.Create(productAvailabilityViewModel.ProductAvailabilities, page ?? 1, pageSize));
         }
 
         [PopupHelper.NoDirectAccess]
@@ -89,7 +70,7 @@ namespace Larram.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            var objToDelete = await _unitOfWork.ProductAvailability.Get(id);
+            var objToDelete = await _unitOfWork.ProductAvailability.GetFirstOrDefault(u => u.Id == id);
             if (objToDelete == null)
             {
                 return NotFound();
@@ -110,24 +91,24 @@ namespace Larram.Areas.Admin.Controllers
         [PopupHelper.NoDirectAccess]
         public async Task<IActionResult> Upsert(int? id, int? productId)
         {
-            ViewBag.ProductId = productId;
-            ProductAvailabilityViewModel productAvailabilityViewModel = new ProductAvailabilityViewModel()
+            productAvailabilityViewModel = new ProductAvailabilityViewModel()
             {
-                ProductAvailability = new ProductAvailability(),
+                Product = await _unitOfWork.Product.GetFirstOrDefault(u => u.Id == productId),
                 SizeList = _unitOfWork.Size.GetAllNotAsync().Select(i => new SelectListItem
                 {
                     Text = i.Name,
                     Value = i.Id.ToString()
                 }),
-        };
-            if(id == null)
+                ProductAvailability = new ProductAvailability(),
+            };
+            if (id == null)
             {
                 //new productAvailability
                 return View(productAvailabilityViewModel);
             }
-            productAvailabilityViewModel.ProductAvailability = await _unitOfWork.ProductAvailability.Get(id.GetValueOrDefault());
-            if(productAvailabilityViewModel == null)
-            { 
+            productAvailabilityViewModel.ProductAvailability = await _unitOfWork.ProductAvailability.GetFirstOrDefault(u => u.Id == id);
+            if (productAvailabilityViewModel.ProductAvailability == null)
+            {
                 return NotFound();
             }
             //edit productAvailability
@@ -136,36 +117,36 @@ namespace Larram.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert([Bind("ProductAvailability, SizeList")] ProductAvailabilityViewModel productAvailabilityViewModel)
+        public async Task<IActionResult> Upsert()
         {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    if(productAvailabilityViewModel.ProductAvailability.Id == 0)
-                    {
-                        await _unitOfWork.ProductAvailability.Add(productAvailabilityViewModel.ProductAvailability);
-                    }
-                    else
-                    {
-                        _unitOfWork.ProductAvailability.Update(productAvailabilityViewModel.ProductAvailability);
-                    }
-                }
-                catch (DBConcurrencyException)
-                {
-                    if (!ProductAvailabilityExists(productAvailabilityViewModel.ProductAvailability.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                await _unitOfWork.Save();
-                return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "Index", _unitOfWork.ProductAvailability.GetAll()) });
-            }
-            return Json(new { isValid = false, html = PopupHelper.RenderRazorViewToString(this, "Upsert", productAvailabilityViewModel.ProductAvailability) });
+                        if (ModelState.IsValid)
+                        {
+                            try
+                            {
+                                if(productAvailabilityViewModel.ProductAvailability.Id == 0)
+                                {
+                                    await _unitOfWork.ProductAvailability.Add(productAvailabilityViewModel.ProductAvailability);
+                                }
+                                else
+                                {
+                                    _unitOfWork.ProductAvailability.Update(productAvailabilityViewModel.ProductAvailability);
+                                }
+                            }
+                            catch (DBConcurrencyException)
+                            {
+                                if (!ProductAvailabilityExists(productAvailabilityViewModel.ProductAvailability.Id))
+                                {
+                                    return NotFound();
+                                }
+                                else
+                                {
+                                    throw;
+                                }
+                            }
+                            await _unitOfWork.Save();
+                            return Json(new { isValid = true, html = PopupHelper.RenderRazorViewToString(this, "Index", _unitOfWork.ProductAvailability.GetAll()) });
+                        }
+                        return Json(new { isValid = false, html = PopupHelper.RenderRazorViewToString(this, "Upsert", productAvailabilityViewModel.ProductAvailability) });
         }
         public bool ProductAvailabilityExists(int id)
         {

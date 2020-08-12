@@ -12,9 +12,9 @@ namespace Larram.Utility
 
         public const string ShoppingCartSession = "ShoppingCartSession";
 
-        public const string StatusApproved = "Approved";
-        public const string StatusInProcess = "InProcess";
-        public const string StatusInShipped = "Shipped";
-        public const string StatusCancelled = "Cancelled";
+        public const string StatusApproved = "Zatwierdzony";
+        public const string StatusInProcess = "W trakcie";
+        public const string StatusInShipped = "Wysłane";
+        public const string StatusCancelled = "Anulowane";
     }
 }

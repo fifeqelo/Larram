@@ -26,10 +26,27 @@ namespace Larram.Areas.Admin.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IActionResult> Index(int? page, string status)
+        public async Task<IActionResult> Index(int? page, string status, string orderBy, string search, string currentFilter)
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            ViewData["IdSortParm"] = String.IsNullOrEmpty(orderBy) ? "id_desc" : "";
+            ViewData["NameSortParm"] = orderBy == "Name" ? "name_desc" : "Name";
+            ViewData["TotalPriceSortParm"] = orderBy == "TotalPrice" ? "totalPrice_desc" : "TotalPrice";
+            ViewData["CurrentSort"] = orderBy;
+            ViewData["CurrentStatusSort"] = status;
+
+            if (search != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                search = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = search;
 
             IEnumerable<Order> orderList;
 
@@ -40,6 +57,32 @@ namespace Larram.Areas.Admin.Controllers
             else
             {
                 orderList = await _unitOfWork.Order.GetAll(u => u.ApplicationUserId == claim.Value, includeProperties: "ApplicationUser");
+            }
+            if (!String.IsNullOrEmpty(search))
+            {
+                orderList = orderList.Where(u => u.Id.ToString().Contains(search) || u.Name.Contains(search) || u.ApplicationUser.Email.Contains(search) || u.PhoneNumber.Contains(search));
+            }
+
+            switch (orderBy)
+            {
+                case "id_desc":
+                    orderList = orderList.OrderByDescending(u => u.Id);
+                    break;
+                case "name_desc":
+                    orderList = orderList.OrderByDescending(u => u.Name);
+                    break;
+                case "Name":
+                    orderList = orderList.OrderBy(u => u.Name); 
+                    break;
+                case "totalPrice_desc":
+                    orderList = orderList.OrderByDescending(u => u.OrderTotal);
+                    break;
+                case "TotalPrice":
+                    orderList = orderList.OrderBy(u => u.OrderTotal);
+                    break;
+                default:
+                    orderList = orderList.OrderBy(u => u.Id);
+                    break;
             }
 
             switch (status)

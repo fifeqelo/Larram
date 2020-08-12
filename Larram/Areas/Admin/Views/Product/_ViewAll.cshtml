@@ -49,7 +49,7 @@
                         <a onclick="showInPopup('@Url.Action("Upsert","Product",new {id=product.Id},Context.Request.Scheme)')" class="text-dark"><i style="font-size:22px" data-feather="edit"></i></a>
                         <a onclick="showInPopup('@Url.Action("Delete","Product",new {id=product.Id},Context.Request.Scheme)')" class="text-dark"><i style="font-size:22px" data-feather="trash-2"></i></a>
                     </td>
-                    <td style="width:5%;"><a asp-controller="ProductAvailability" asp-route-productName="@product.Name" asp-route-productId="@product.Id" asp-action="Index" class="text-light" style="font-size:70%"><div class="container p-2 bg-dark">EDYCJA <i style="font-size:16px" data-feather="tool"></i></div></a></td>
+                    <td style="width:5%;"><a asp-controller="ProductAvailability" asp-route-productId="@product.Id" asp-action="Index" class="text-light" style="font-size:70%"><div class="container p-2 bg-dark">EDYCJA <i style="font-size:16px" data-feather="tool"></i></div></a></td>
                 </tr>
                 }
             </tbody>
