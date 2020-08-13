@@ -1,6 +1,6 @@
 ﻿@model Larram.Models.ViewModels.OrderDetailsViewModel
 @using Larram.Utility
-
+@*
 <form method="post">
     <input hidden asp-for="Order.Id" />
     <br />
@@ -218,7 +218,275 @@
             </div>
         </div>
     </div>
-</form>
+</form>*@
+
+    <form method="post">
+        <input hidden asp-for="Order.Id" />
+        <div class="container Roboto pt-5 pb-5 pl-5">
+            <div class="row w-100 m-0">
+                <div class="col-12 text-left pl-0">
+                    <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="btn pl-0"><i class="fas fa-arrow-left"></i><b> Wróć do zamówień</b></a>
+                </div>
+                <div class="col-lg-8 col-12">
+                    <div class="row">
+                        <div class="col-12 pt-4 pb-2 pl-0">
+                            <h3><b>Dane do wysyłki</b></h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 p-2 d-flex justify-content-start">
+                                <h1 class="m-0 text-left pl-1" style="font-size:80%; width:60%;"><b>Imię </b></h1>
+                            </div>
+                            <div class="col-12 d-flex justify-content-start">
+                                @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+                                {
+                                    <input asp-for="@Model.Order.Name" type="text" class="form-control" style="width:60%;" />
+                                }
+                                else
+                                {
+                                    <input asp-for="@Model.Order.Name" type="text" class="form-control" style="width:60%;" readonly />
+                                }
+                            </div>
+                            <div class="col-12  pt-3 p-2 d-flex justify-content-start">
+                                <span style="font-size:80%; width:60%;" asp-validation-for="Order.Name" class="m-0 text-left pl-1 text-danger"></span>
+                            </div>
+                            <div class="col-12 p-2 d-flex justify-content-start">
+                                <h1 class="m-0 text-left pl-1" style="font-size:80%; width:60%;"><b>Email </b></h1>
+                            </div>
+                            <div class="col-12 d-flex justify-content-start">
+                                @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+                                {
+                                    <input asp-for="@Model.Order.ApplicationUser.Email" type="text" class="form-control" style="width:60%;" />
+                                }
+                                else
+                                {
+                                    <input asp-for="@Model.Order.ApplicationUser.Email" type="text" class="form-control" style="width:60%;" readonly />
+                                }
+                            </div>
+                            <div class="col-12  pt-3 p-2 d-flex justify-content-start">
+                                <span style="font-size:80%; width:60%;" asp-validation-for="Order.ApplicationUser.Email" class="m-0 text-left pl-1 text-danger"></span>
+                            </div>
+                            <div class="col-12 d-flex justify-content-start">
+                                <div class="row text-center" style="width:58%;">
+                                    <div class="col-6 p-2 d-flex justify-content-start">
+                                        <h1 class="m-0 text-left pl-1" style="font-size:80%; width:40%;"><b>Miasto </b></h1>
+                                    </div>
+                                    <div class="col-6 p-2">
+                                        <h1 class="m-0 text-left pl-1" style="font-size:80%; width:40%;"><b>Województwo </b></h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 d-flex justify-content-start">
+                                <div class="row text-center" style="width:58%;">
+                                    <div class="col-6 p-2 d-flex justify-content-start">
+                                        @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+                                        {
+                                            <input asp-for="@Model.Order.City" type="text" class="form-control" style="width:120%;" />
+                                        }
+                                        else
+                                        {
+                                            <input asp-for="@Model.Order.City" type="text" class="form-control" style="width:120%;" readonly />
+                                        }
+                                    </div>
+                                    <div class="col-6 p-2">
+                                        @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+                                        {
+                                            <input asp-for="@Model.Order.State" type="text" class="form-control" style="width:120%;" />
+                                        }
+                                        else
+                                        {
+                                            <input asp-for="@Model.Order.State" type="text" class="form-control" style="width:120%;" readonly />
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 d-flex justify-content-start">
+                                <div class="row text-center" style="width:58%;">
+                                    <div class="col-6 p-0 d-flex justify-content-center">
+                                        <span style="font-size:80%; width:40%;" asp-validation-for="Order.City" class="m-0 text-left pl-1 text-danger"></span>
+                                    </div>
+                                    <div class="col-6 p-0">
+                                        <span style="font-size:80%; width:40%;" asp-validation-for="Order.State" class="m-0 text-left pl-1 text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 p-2 d-flex justify-content-start">
+                                <h1 class="m-0 text-left pl-1" style="font-size:80%; width:60%;"><b>Ulica</b></h1>
+                            </div>
+                            <div class="col-12 d-flex justify-content-start">
+                                @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+                                {
+                                    <input asp-for="@Model.Order.StreetAdress" type="text" class="form-control" style="width:60%;" />
+                                }
+                                else
+                                {
+                                    <input asp-for="@Model.Order.StreetAdress" type="text" class="form-control" style="width:60%;" readonly />
+                                }
+                            </div>
+                            <div class="col-12  pt-3 p-2 d-flex justify-content-start">
+                                <span style="font-size:80%; width:60%;" asp-validation-for="Order.StreetAdress" class="m-0 text-left pl-1 text-danger"></span>
+                            </div>
+                            <div class="col-12 d-flex justify-content-start">
+                                <div class="row text-center" style="width:58%;">
+                                    <div class="col-6 p-2 d-flex justify-content-start">
+                                        <h1 class="m-0 text-left pl-1" style="font-size:80%; width:60%;"><b>Kod pocztowy </b></h1>
+                                    </div>
+                                    <div class="col-6 p-2">
+                                        <h1 class="m-0 text-left pl-1" style="font-size:80%; width:60%;"><b>Numer telefonu </b></h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 d-flex justify-content-start">
+                                <div class="row text-center" style="width:58%;">
+                                    <div class="col-6 p-2 d-flex justify-content-start">
+                                        @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+                                        {
+                                            <input asp-for="@Model.Order.PostalCode" type="text" class="form-control" style="width:120%;" />
+                                        }
+                                        else
+                                        {
+                                            <input asp-for="@Model.Order.PostalCode" type="text" class="form-control" style="width:120%;" readonly />
+                                        }
+                                    </div>
+                                    <div class="col-6 p-2">
+                                        @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+                                        {
+                                            <input asp-for="@Model.Order.PhoneNumber" type="text" class="form-control" style="width:120%;" />
+                                        }
+                                        else
+                                        {
+                                            <input asp-for="@Model.Order.PhoneNumber" type="text" class="form-control" style="width:120%;" readonly />
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 d-flex justify-content-start">
+                                <div class="row text-center" style="width:58%;">
+                                    <div class="col-6 p-0 d-flex justify-content-center">
+                                        <span style="font-size:80%; width:40%;" asp-validation-for="Order.PostalCode" class="m-0 text-left pl-1 text-danger"></span>
+                                    </div>
+                                    <div class="col-6 p-0">
+                                        <span style="font-size:80%; width:40%;" asp-validation-for="Order.PhoneNumber" class="m-0 text-left pl-1 text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 p-2 d-flex justify-content-start">
+                                <h1 class="m-0 text-left pl-1" style="font-size:80%; width:60%;"><b>Data zamówienia </b></h1>
+                            </div>
+                            <div class="col-12 d-flex justify-content-start">
+                                <input value="@Model.Order.OrderDate.ToShortDateString()" type="text" class="form-control" style="width:60%;" readonly />
+                            </div>
+                            <div class="col-12 p-2"></div>
+                            <div class="col-12 p-2 d-flex justify-content-start">
+                                <h1 class="m-0 text-left pl-1" style="font-size:80%; width:60%;"><b>Przewoźnik </b></h1>
+                            </div>
+                            <div class="col-12 d-flex justify-content-start">
+                                @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+                                {
+                                    <input id="carrier" asp-for="@Model.Order.Carrier" type="text" class="form-control" style="width:60%;" />
+                                }
+                                else
+                                {
+                                    <input asp-for="@Model.Order.Carrier" type="text" class="form-control" style="width:60%;" readonly />
+                                }
+                            </div>
+                            <div class="col-12  pt-3 p-2 d-flex justify-content-start">
+                                <span id="carrierValidation" style="font-size:80%; width:60%; display:none;" class="text-danger">To pole jest wymagane</span>
+                            </div>
+                            <div class="col-12 p-2 d-flex justify-content-start">
+                                <h1 class="m-0 text-left pl-1" style="font-size:80%; width:60%;"><b>Numer do śledzenia paczki </b></h1>
+                            </div>
+                            <div class="col-12 d-flex justify-content-start">
+                                @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+                                {
+                                    <input id="trackingNumber" asp-for="@Model.Order.TrackingNumber" type="text" class="form-control" style="width:60%;" />
+                                }
+                                else
+                                {
+                                    <input asp-for="@Model.Order.TrackingNumber" type="text" class="form-control" style="width:60%;" readonly />
+                                }
+                            </div>
+                            <div class="col-12  pt-3 p-2 d-flex justify-content-start">
+                                <span id="trackingValidation" style="font-size:80%; width:60%; display:none;" class="text-danger">To pole jest wymagane</span>
+                            </div>
+                            <div class="col-12 p-2 d-flex justify-content-start">
+                                <h1 class="m-0 text-left pl-1" style="font-size:80%; width:60%;"><b>Data wysyłki </b></h1>
+                            </div>
+                            <div class="col-12 d-flex justify-content-start">
+                                <input value="@Model.Order.ShippingDate.ToShortDateString()" id="shippingDate" type="text" style="width:60%;" readonly class="form-control" />
+                            </div>
+                            <div class="col-12  pt-3 p-2"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-12">
+                    <div class="row">
+                        <div class="col-12 pt-4 pb-2 pl-0">
+                            <h5><b>Podsumowanie zamówienia</b></h5>
+                        </div>
+                        <div class="col-12">
+                            <div class="row">
+                                @foreach (var item in Model.OrderDetails)
+                                {
+                                    <div class="row pt-3">
+                                        <div class="col-6">
+                                            <h6><b>@item.ProductAvailability.Product.Name</b></h6>
+                                        </div>
+                                        <div class="col-6 text-right">
+                                            <h6 style="font-size:70%;">Cena: @item.ProductAvailability.Product.Price.ToString("0.00") PLN</h6>
+                                        </div>
+                                        <div class="col-6">
+                                            <h6 style="font-size:70%;">Ilość: @item.Quantity</h6>
+                                        </div>
+                                        <div class="col-6 text-right">
+                                            <h6 style="font-size:70%;"><b>Suma: @((item.Price*item.Quantity).ToString("0.00")) PLN</b></h6>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-12 pb-5 pt-5">
+                            <div class="row">
+                                <div class="col-6 p-0">
+                                    <h4>
+                                        <b>Suma końcowa:</b>
+                                    </h4>
+                                </div>
+                                <div class="col-6 p-0 pr-2 text-right">
+                                    <h4><b>@Model.Order.OrderTotal.ToString("0.00") PLN</b></h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 pb-4 d-flex justify-content-center">
+                            @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+                            {
+                                <br />
+                                @if (Model.Order.OrderStatus == SD.StatusApproved)
+                                {
+                                    <a asp-action="StartProcessing" asp-route-id="@Model.Order.Id" class="btn btn-success text-light form-control rounded-0"><b>Rozpocznij realizację</b></a>
+                                }
+                                @if (Model.Order.OrderStatus == SD.StatusInProcess)
+                                {
+                                    <input type="submit" value="Wyślij zamówienie" onclick="return validateInput()" class="btn btn-success text-light form-control rounded-0"
+                                           formaction="/Admin/Order/ShipOrder" formmethod="post" />
+                                }
+                            }
+                            else
+                            {
+                                <label class="btn btn-dark text-light form-control rounded-0">@Model.Order.OrderStatus</label>
+                            }
+                        </div>
+                        <div class="col-12 d-flex justify-content-center">
+                            @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee) && Model.Order.OrderStatus != SD.StatusCancelled)
+                            {
+                                <a asp-action="CancelOrder" asp-route-id="@Model.Order.Id" class="btn btn-danger text-light form-control rounded-0">Anuluj zamówienie</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
 @section Scripts {
     <script>
         function validateInput() {

@@ -39,7 +39,7 @@
                 }
                 <hr class="m-0" />
             </div>
-            <div class="col-6 pt-2 d-flex justify-content-start" style="width:20%; font-size:80%;">
+            <div class="col-lg-6 col-12 pt-2 d-flex justify-content-start" style="width:20%; font-size:80%;">
                 <form asp-controller="Order" asp-action="Index" method="get" style="display:inline;">
                     <p>
                         <input class="form-control Roboto" type="text" value="@ViewData["CurrentFilter"]" name="search" placeholder="Szukaj..." style="width:70%; border-radius:0;" />
@@ -47,8 +47,8 @@
                     <a asp-action="Index" class="text-dark pl-1" style="font-size:120%;">Wyczyść filtry</a>
                 </form>
             </div>
-            <div class="col-6 pt-2 pb-5 d-flex justify-content-end" style="font-size:90%;">
-                <ul class="list-group list-group-horizontal-sm" style="list-style-type: none;">
+            <div class="col-12 col-lg-6 pt-2 pb-5 d-flex justify-content-lg-end justify-content-center" style="font-size:90%;">
+                <ul class="list-group list-group-horizontal" style="list-style-type: none;">
                     <a class="text-light" asp-controller="Order"
                        asp-action="Index" asp-route-status="inprocess" asp-route-currentFilter="@ViewData["CurrentFilter"]">
                         <li class="p-2 border border-secondary @inprocess">W trakcie</li>

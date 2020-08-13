@@ -59,7 +59,7 @@ namespace Larram.Areas.Admin.Controllers
                     productAvailabilityViewModel.ProductAvailabilities = productAvailabilityViewModel.ProductAvailabilities.OrderBy(u => u.Quantity);
                     break;
             }
-            int pageSize = 3;
+            int pageSize = 10;
             return View(PaginatedList<ProductAvailability>.Create(productAvailabilityViewModel.ProductAvailabilities, page ?? 1, pageSize));
         }
 
