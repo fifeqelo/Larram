@@ -216,11 +216,25 @@ namespace Larram.Areas.Admin.Controllers
                 {
                     if(productViewModel.Product.Id == 0)
                     {
-                        await _unitOfWork.Product.Add(productViewModel.Product);
+                        if(productViewModel.Product.DiscountPrice != 0 && productViewModel.Product.DiscountPrice < productViewModel.Product.Price)
+                        {
+                            await _unitOfWork.Product.Add(productViewModel.Product);
+                        } else
+                        {
+                            productViewModel.Product.DiscountPrice = productViewModel.Product.Price;
+                            await _unitOfWork.Product.Add(productViewModel.Product);
+                        }
                     }
                     else
                     {
-                        _unitOfWork.Product.Update(productViewModel.Product);
+                        if (productViewModel.Product.DiscountPrice != 0 && productViewModel.Product.DiscountPrice < productViewModel.Product.Price)
+                        {
+                            _unitOfWork.Product.Update(productViewModel.Product);
+                        }else
+                        {
+                            productViewModel.Product.DiscountPrice = productViewModel.Product.Price;
+                            _unitOfWork.Product.Update(productViewModel.Product);
+                        }
                     }
                 }
                 catch (DBConcurrencyException)

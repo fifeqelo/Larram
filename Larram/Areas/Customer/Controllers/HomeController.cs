@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Larram.Utility;
+using System.Web;
 
 namespace Larram.Areas.Customer.Controllers
 {
@@ -26,6 +27,8 @@ namespace Larram.Areas.Customer.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly ApplicationDbContext _context;
 
+        [BindProperty]
+        public ProductDisplayViewModel productDisplayViewModel { get; set; }
         public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork, ApplicationDbContext context)
         {
             _logger = logger;
@@ -33,7 +36,7 @@ namespace Larram.Areas.Customer.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
@@ -43,16 +46,61 @@ namespace Larram.Areas.Customer.Controllers
                 HttpContext.Session.SetInt32(SD.ShoppingCartSession, count);
             }
 
+            IEnumerable<Product> productList = await _unitOfWork.Product.GetAll();
+            productDisplayViewModel = new ProductDisplayViewModel()
+            {
+                MenProducts = productList.OrderByDescending(u => u.CreatedDate).Where(u => u.Gender.ToString() == "Mężczyzna").Take(4),
+                WomenProducts = productList.OrderByDescending(u => u.CreatedDate).Where(u => u.Gender.ToString() == "Kobieta").Take(4),
 
-            return View();
+            };
+
+            return View(productDisplayViewModel);
         }
 
-        public async Task<IActionResult> ShowProducts()
+        public async Task<IActionResult> ShowProducts(string gender, string type, bool discount, string sort)
         {
-            IEnumerable<Product> productList = await _unitOfWork.Product.GetAll();
+            ViewData["type"] = type;
+            ViewData["gender"] = gender;
+            ViewData["discount"] = discount;
+            IEnumerable<Product> productList = await _unitOfWork.Product.GetAll(includeProperties: "Category");
             IEnumerable<Product> filteredList = productList
             .GroupBy(u => u.Name)
             .Select(u => u.First());
+            if (gender == "mezczyzna")
+            {
+                filteredList = filteredList.Where(u => u.Gender.ToString().Equals("Mężczyzna"));
+            } else
+            {
+                if(gender == "kobieta")
+                {
+                    filteredList = filteredList.Where(u => u.Gender.Equals(1));
+                } else
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            foreach(var item in filteredList)
+            {
+                filteredList = filteredList.Where(u => u.Category.Name.ToLower().Equals(type));
+                if (discount)
+                {
+                     filteredList = filteredList.Where(u => u.DiscountPrice > 0);
+                }
+            }
+            switch (sort)
+            {
+                case "priceasc":
+                        filteredList = filteredList.OrderBy(u => u.DiscountPrice);
+                    break;
+                case "pricedesc":
+                        filteredList = filteredList.OrderByDescending(u => u.DiscountPrice);
+                    break;
+                case "newest":
+                    filteredList = filteredList.OrderByDescending(u => u.CreatedDate);
+                    break;
+                default:
+                    return View(filteredList);
+            }
             return View(filteredList);
         }
 

@@ -9,12 +9,18 @@
             <div class="col-12 text-left pl-0">
                 <a asp-action="Index" asp-controller="Cart" asp-area="Customer" class="btn pl-0"><i class="fas fa-arrow-left"></i> <b>Wróć do koszyka</b></a>
             </div>
+            <div class="col-12">
+                <h6 class="text-danger">@TempData["message"]</h6>
+            </div>
             <div class="col-lg-8 col-12">
                 <div class="row">
-                    <div class="col-12 pt-4 pb-2 pl-0">
+                    <div class="col-6 pt-4 pb-2 pl-0">
                         <h3><b>Dane do wysyłki</b></h3>
                     </div>
-                    <div class="row">
+                    <div class="col-6 pt-4 pb-2 pl-0 d-flex justify-content-center">
+                        <i onclick="showHideDelivery()" id="minusplus" class="fas fa-plus"></i>
+                    </div>
+                    <div class="row d-none" id="showHideDeliveryDetails">
                         <div class="col-12 p-2 d-flex justify-content-start">
                             <h1 class="m-0 text-left pl-1" style="font-size:80%; width:60%;"><b>Imię </b></h1>
                         </div>
@@ -94,51 +100,57 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 pt-4 pb-2 pl-0">
+                    <div class="col-6 pt-4 pb-2 pl-0">
                         <h3 onclick="showHide()"><b>Płatność</b></h3>
                     </div>
-                        <div class="row" id="showHideDetails">
-                            <div class="col-12 p-2 d-flex justify-content-start">
-                                <h1 class="m-0 text-left pl-1" style="font-size:80%; width:60%;"><b>Dane właściciela karty</b></h1>
-                            </div>
-                            <div class="col-12 d-flex justify-content-start">
-                                <input type="text" class="form-control" style="width:60%;" />
-                            </div>
-                            <div class="col-12 p-2 d-flex justify-content-start">
-                                <h1 class="m-0 text-left pl-1" style="font-size:80%; width:60%;"><b>Numer karty</b></h1>
-                            </div>
-                            <div class="col-12 d-flex justify-content-start">
-                                <input type="text" class="form-control" style="width:60%;" />
-                            </div>
-                            <div class="col-12 p-2 d-flex justify-content-start">
-                                <h1 class="m-0 text-left pl-1" style="font-size:80%; width:60%;"><b>CVC </b></h1>
-                            </div>
-                            <div class="col-12 d-flex justify-content-start">
-                                <input type="text" class="form-control" style="width:60%;" />
-                            </div>
-                            <div class="col-12 p-2 d-flex justify-content-start">
-                                <h1 class="m-0 text-left pl-1" style="font-size:80%; width:60%;"><b>Data ważności karty</b></h1>
-                            </div>
-                            <div class="col-12 d-flex justify-content-start">
-                                <div class="row text-center" style="width:58%;">
-                                    <div class="col-6 p-2 d-flex justify-content-start">
-                                        <input type="text" placeholder="Miesiąc" class="form-control" style="width:120%;" />
-                                    </div>
-                                    <div class="col-6 p-2">
-                                        <input type="text" placeholder="Rok" class="form-control" style="width:120%;" />
-                                    </div>
+                    <div class="col-6 pt-4 pb-2 pl-0 d-flex justify-content-center">
+                        <i onclick="showHidePayment()" id="minuspluspay" class="fas fa-plus"></i>
+                    </div>
+                    <div class="row d-none" id="showHidePaymentDetails">
+                        <div class="col-12 p-2 d-flex justify-content-start">
+                            <h1 class="m-0 text-left pl-1" style="font-size:80%; width:60%;"><b>Dane właściciela karty</b></h1>
+                        </div>
+                        <div class="col-12 d-flex justify-content-start">
+                            <input type="text" class="form-control" style="width:60%;" />
+                        </div>
+                        <div class="col-12 p-2 d-flex justify-content-start">
+                            <h1 class="m-0 text-left pl-1" style="font-size:80%; width:60%;"><b>Numer karty</b></h1>
+                        </div>
+                        <div class="col-12 d-flex justify-content-start">
+                            <input type="text" class="form-control" style="width:60%;" />
+                        </div>
+                        <div class="col-12 p-2 d-flex justify-content-start">
+                            <h1 class="m-0 text-left pl-1" style="font-size:80%; width:60%;"><b>CVC </b></h1>
+                        </div>
+                        <div class="col-12 d-flex justify-content-start">
+                            <input type="text" class="form-control" style="width:60%;" />
+                        </div>
+                        <div class="col-12 p-2 d-flex justify-content-start">
+                            <h1 class="m-0 text-left pl-1" style="font-size:80%; width:60%;"><b>Data ważności karty</b></h1>
+                        </div>
+                        <div class="col-12 d-flex justify-content-start">
+                            <div class="row text-center" style="width:58%;">
+                                <div class="col-6 p-2 d-flex justify-content-start">
+                                    <input type="text" placeholder="Miesiąc" class="form-control" style="width:120%;" />
+                                </div>
+                                <div class="col-6 p-2">
+                                    <input type="text" placeholder="Rok" class="form-control" style="width:120%;" />
                                 </div>
                             </div>
                         </div>
+                    </div>
                 </div>
             </div>
             <div class="col-lg-4 col-12">
                 <div class="row">
-                    <div class="col-12 pt-4 pb-2 pl-0">
+                    <div class="col-10 pt-4 pb-2 pl-0">
                         <h5><b>Podsumowanie zamówienia</b></h5>
                     </div>
+                    <div class="col-2 pt-4 pb-2 pl-0 d-flex justify-content-center">
+                        <i onclick="showHideProduct()" id="minusplusprod" class="fas fa-plus"></i>
+                    </div>
                     <div class="col-12">
-                        <div class="row">
+                        <div class="row d-none" id="showHideProductDetails">
                             @foreach (var item in Model.ListCart)
                             {
                                 <div class="row pt-3">
@@ -186,7 +198,35 @@
 
 @section Scripts{
     <script>
-        function showHide() {
+        function showHidePayment() {
+            var details = document.getElementById("showHidePaymentDetails");
+          if (details.className == "row") {
+                details.className = "row d-none";
+                document.getElementById("minuspluspay").className = "fas fa-plus";
+            } else {
+                details.className = "row";
+                document.getElementById("minuspluspay").className = "fas fa-minus";
+            }
+        }
+        function showHideDelivery() {
+            var details = document.getElementById("showHideDeliveryDetails");
+            if (details.className == "row") {
+                details.className = "row d-none";
+                document.getElementById("minusplus").className = "fas fa-plus";
+            } else {
+                details.className = "row";
+                document.getElementById("minusplus").className = "fas fa-minus";
+            }
+        }
+        function showHideProduct() {
+            var details = document.getElementById("showHideProductDetails");
+            if (details.className == "row") {
+                details.className = "row d-none";
+                document.getElementById("minusplusprod").className = "fas fa-plus";
+            } else {
+                details.className = "row";
+                document.getElementById("minusplusprod").className = "fas fa-minus";
+            }
         }
     </script>
  }

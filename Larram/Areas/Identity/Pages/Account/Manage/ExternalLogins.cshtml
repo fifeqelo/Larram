@@ -8,8 +8,8 @@
 <partial name="_StatusMessage" for="StatusMessage" />
 @if (Model.CurrentLogins?.Count > 0)
 {
-    <h4>Registered Logins</h4>
-    <table class="table">
+<h4 class="Roboto p-2"><b>Zarejestrowane usługi.</b></h4>
+    <table class="table p-2">
         <tbody>
             @foreach (var login in Model.CurrentLogins)
             {
@@ -38,14 +38,21 @@
 }
 @if (Model.OtherLogins?.Count > 0)
 {
-    <h4>Add another service to log in.</h4>
+    <h4 class="Roboto p-2"><b>Dodaj inną usługę, aby się zalogować.</b></h4>
     <hr />
-    <form id="link-login-form" asp-page-handler="LinkLogin" method="post" class="form-horizontal">
-        <div id="socialLoginList">
+    <form id="link-login-form p-2" asp-page-handler="LinkLogin" method="post" class="form-horizontal">
+        <div id="socialLoginList" class="p-2">
             <p>
                 @foreach (var provider in Model.OtherLogins)
                 {
-                    <button id="@($"link-login-button-{provider.Name}")" type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                    if (provider.Name == "Facebook")
+                    {
+                        <button type="submit" class="p-2 pr-5 pl-5 mr-2 border bg-primary text-white quickSand" style="font-size:100%;" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"><i class="fab fa-facebook"></i> @provider.DisplayName</button>
+                    }
+                    else
+                    {
+                        <button type="submit" class="p-2 pr-5 pl-5 border text-secondary quickSand" style="font-size:100%;" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"><img src="~/img/new-google-favicon-512.webp" style="width:20px; height:20px;" /> @provider.DisplayName</button>
+                    }
                 }
             </p>
         </div>

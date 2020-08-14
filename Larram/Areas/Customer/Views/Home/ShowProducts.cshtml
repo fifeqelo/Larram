@@ -3,19 +3,120 @@
     ViewData["Title"] = "ShowProducts";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-    <div class="container p-5 Roboto">
-        <div class="row row-cols-3">
+@{ 
+    var title = "";
+    switch (@ViewData["type"])
+    {
+        case "t-shirt":
+            title = "Koszulki";
+            break;
+        case "polo":
+            title = "Polo";
+            break;
+        case "spodnie":
+            title = "Spodnie";
+            break;
+        case "jeansy":
+            title = "Jeansy";
+            break;
+        case "koszula":
+            title = "Koszule";
+            break;
+        case "szorty":
+            title = "Szorty";
+            break;
+        case "bluza":
+            title = "Bluzy";
+            break;
+        case "sweter":
+            title = "Swetry";
+            break;
+        case "plecak":
+            title = "Plecaki";
+            break;
+        case "buty":
+            title = "Buty";
+            break;
+        case "czapka":
+            title = "Czapki";
+            break;
+        case "pasek":
+            title = "Paski";
+            break;
+        case "torebka":
+            title = "Torebki";
+            break;
+        case "spódnica":
+            title = "Spódnice";
+            break;
+        case "sukienka":
+            title = "Sukienki";
+            break;
+    }
+            }
+    <div class="container pt-3 Roboto">
+        <div class="row">
+            @if (Model.Count() > 0)
+            {
+                <div class="col-12"><h2><b>@title</b></h2></div>
+                <div class="col-6">
+                    <a class="btn dropdown-toggle p-0" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Sortuj według
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <ul class="list-group list-unstyled text-center">
+                            <a class="text-dark" asp-area="Customer" asp-controller="Home" asp-action="ShowProducts" asp-route-gender="@ViewData["gender"]" asp-route-type="@ViewData["type"]" asp-route-discount="@ViewData["discount"]" asp-route-sort="priceasc" >
+                                <li class="list-group-item rounded-0 sortButton">
+                                    Najniższa cena
+                                </li>
+                            </a>
+                            <a class="text-dark" asp-area="Customer" asp-controller="Home" asp-action="ShowProducts" asp-route-gender="@ViewData["gender"]" asp-route-type="@ViewData["type"]" asp-route-discount="@ViewData["discount"]" asp-route-sort="pricedesc">
+                                <li class="list-group-item rounded-0 sortButton">
+                                    Najwyższa cena
+                                </li>
+                            </a>
+                            <a class="text-dark" asp-area="Customer" asp-controller="Home" asp-action="ShowProducts" asp-route-gender="@ViewData["gender"]" asp-route-type="@ViewData["type"]" asp-route-discount="@ViewData["discount"]" asp-route-sort="newest">
+                                <li class="list-group-item rounded-0 sortButton">
+                                    Najnowsze
+                                </li>
+                            </a>
+                        </ul>
+                    </div>
+                    </div>
+            }
+            else
+            {
+                <div class="col-12"><h2><b>Brak produktów o podanych parametrach</b></h2></div>
+            }
+        </div>
+        <div class="row pt-5 w-100 m-0">
             @foreach (var product in Model)
             {
-            <div class="col-4">
-                <div class="card" style="border:0px;">
-                    <a asp-area="Customer" asp-controller="Home" asp-action="ProductDetails" asp-route-id="@product.Id"><img src="@product.ImageUrl" class="card-img-top rounded-0" /></a>
-                    <div class="pl-1">
-                        <p class="card-title h5"><b style="color:#2c3e50">@product.Name</b></p>
+            <div class="col-6 col-lg-3 p-1">
+                <div class="row">
+                    <div class="col-12">
+                        <a  asp-area="Customer" asp-controller="Home" asp-action="ProductDetails" asp-route-id="@product.Id"><div class="imgAbout"><img src="@product.ImageUrl" class="w-100" /></div></a>
+
                     </div>
-                    <div class="pl-1">
-                        <p class="card-title h5"><b style="color:#2c3e50">@product.Price.ToString("0.00")</b></p>
+                    <div class="col-12 pt-2">
+                        <h6 style="font-size:60%;" class="mb-1"><b style="color:#2c3e50">@product.Name</b></h6>
+                    </div>
+                    <div class="col-12 pt-0">
+                        @if (product.DiscountPrice != 0 && product.DiscountPrice < product.Price)
+            {
+                            <div class="row">
+                                <div class="col-4 pr-0">
+                                    <h6><b style="color:#e3291b; font-size:110%;">@product.DiscountPrice.ToString("0.00") PLN</b></h6>
+                                </div>
+                                <div class="col-7 pl-0">
+                                    <h6><s class="mb-1" style="color:#2c3e50; font-size:90%;">@product.Price.ToString("0.00") PLN</s></h6>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <h6><b style="color:#2c3e50">@product.Price.ToString("0.00") PLN</b></h6>
+                        }
                     </div>
                 </div>
             </div>

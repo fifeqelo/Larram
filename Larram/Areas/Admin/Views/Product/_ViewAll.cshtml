@@ -29,7 +29,7 @@
                 @foreach (var product in Model)
                 {
                     var price = "BRAK";
-                    if (product.DiscountPrice > 0)
+                    if (product.DiscountPrice != product.Price)
                     {
                         price = product.DiscountPrice.ToString("0.00");
                     }

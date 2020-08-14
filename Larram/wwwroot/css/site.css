@@ -19,9 +19,9 @@ a {
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff !important;
+    background-color: #343a40;
+    border-color: #1861ac;
 }
 
 /* Sticky footer styles
@@ -81,7 +81,7 @@ body {
     background-color:#343a40;
 }
 
-.carousel-control-next-icon, .carousel-control-prev-icon {
+/*.carousel-control-next-icon, .carousel-control-prev-icon {
     width: 3rem;
     height: 3rem;
 }
@@ -90,7 +90,7 @@ body {
     height: 20px;
     margin: 0.5rem;
     border-radius: 100%;
-}
+}*/
 .footer-list {
     list-style-type: none;
     margin: 0;
@@ -235,4 +235,21 @@ button {
 }
 .btn {
     border-radius:0;
+}
+.sortButton:hover {
+    background-color:lightgray;
+}
+.imgAbout {
+    background: #4f4b4b;
+}
+
+.imgAbout img {
+        opacity: 1;
+        transition: opacity .25s ease-in-out;
+        -moz-transition: opacity .25s ease-in-out;
+        -webkit-transition: opacity .25s ease-in-out;
+}
+
+.imgAbout img:hover {
+            opacity: 0.6;
 }

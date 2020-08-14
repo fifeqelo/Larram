@@ -5,7 +5,7 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-    <ul class="navbar-nav pr-3">
+    <ul class="navbar-nav flex-row pt-xl-0 pt-md-0 pt-sm-0 pt-5 pr-3">
         @if (SignInManager.IsSignedIn(User))
         {
             <li class="nav-item">
@@ -19,13 +19,13 @@
             </li>
             <li class="nav-item">
 
-                <a class="nav-link text-light navBar-panel Roboto" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                <a class="nav-link text-light navBar-panel Roboto position-relative" asp-area="Customer" asp-controller="Cart" asp-action="Index">
                     <i style="font-size:32px" data-feather="shopping-bag"></i><p>KOSZYK</p>
                     @if (HttpContextAccessor.HttpContext.Session.GetInt32(SD.ShoppingCartSession) != null
                      && HttpContextAccessor.HttpContext.Session.GetInt32(SD.ShoppingCartSession) != 0)
                     {
                         var count = HttpContextAccessor.HttpContext.Session.GetInt32(SD.ShoppingCartSession);
-                        <p class="text-light Roboto bg-dark p-1" style="position:absolute; top:22%; font-size:50%;">@count</p>
+                        <p class="text-light Roboto bg-success p-1 pl-2 pr-2" style="position:absolute; top:32%; left:55%; font-size:38%;">@count</p>
                     }
                 </a>
             </li>
@@ -41,7 +41,7 @@
                         <a class="nav-link dropdown-toggle text-light navBar-panel Roboto" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i style="font-size:32px" data-feather="settings"></i><p>ZARZĄDZANIE</p>
                         </a>
-                        <div class="dropdown-menu pr-3 pl-3 pt-1 pb-1 dropdown-menu-lg-right bg-dark" aria-labelledby="navbarDropdown">
+                        <div class="dropdown-menu pr-3 pl-3 pt-1 pb-1 dropdown dropdown-menu-lg-right bg-dark" aria-labelledby="navbarDropdown">
                             @if (User.IsInRole(SD.Role_Admin))
                             {
                                 <a class="text-light dropdown-item Roboto" asp-area="Admin" asp-controller="Category" asp-action="Index">Kategorie</a>

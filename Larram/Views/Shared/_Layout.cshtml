@@ -10,113 +10,94 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark box-shadow p-0">
+        <nav class="navbar fixed-top navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark box-shadow p-0">
             <div class="container-fluid p-0">
                 <div class="row p-0 m-0 w-100">
-                    <div class="col-8 p-0">
+                    <div class="col-12 col-lg-8 p-0">
                         <a class="navbar-brand redRose p-0 m-0 centered" asp-area="Customer" asp-controller="Home" asp-action="Index">LARRAM</a>
                     </div>
-                        <div class="col-4 p-0 d-flex justify-content-end">
-                            <partial name="_LoginPartial" />
-                        </div>
-                        <div class="col-12 d-flex justify-content-center p-0">
-                            <ul class="navbar-nav flex-grow-1 nav p-0 justify-content-center" style="background-color: #2e3036;">
-                                <li class="nav-item mr-1 pb-1 displayMenu">
-                                    <div class="nav-link text-light Roboto menuLink">WYPRZEDAŻ</div>
-                                    <div class="row dropDownMenu" style="color:dimgrey">
-                                        <div class="col-4">
-                                            <ul>
-                                                <li style="margin-bottom:0.7rem; color:black;" class="quickSand"><b>MĘŻCZYZNA</b></li>
-                                                <li class="productLink"><a href="#">Koszulki</a></li>
-                                                <li class="productLink"><a href="#">Spodnie</a></li>
-                                                <li class="productLink"><a href="#">Spodenki</a></li>
-                                                <li class="productLink"><a href="#">Bluzy</a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="col-4">
-                                            <ul class="list-group">
-                                                <li style="margin-bottom:0.7rem; color:black;" class="quickSand"><b>KOBIETA</b></li>
-                                                <li class="productLink"><a href="#">Koszulki</a></li>
-                                                <li class="productLink"><a href="#">Spodnie</a></li>
-                                                <li class="productLink"><a href="#">Sukienki</a></li>
-                                                <li class="productLink"><a href="#">Bluzy</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="nav-item mr-1 displayMenu">
-                                    <div class="nav-link text-light Roboto menuLink">KOBIETA</div>
-                                    <div class="row dropDownMenu">
-                                        <div class="col-4">
-                                            <ul>
-                                                <li style="margin-bottom:0.7rem; color:black;" class="quickSand"><b>UBRANIA</b></li>
-                                                <li class="productLink"><a href="#">Koszulki</a></li>
-                                                <li class="productLink"><a href="#">Sukienki</a></li>
-                                                <li class="productLink"><a href="#">Spódnice</a></li>
-                                                <li class="productLink"><a href="#">Koszule</a></li>
-                                                <li class="productLink"><a href="#">Jeansy</a></li>
-                                                <li class="productLink"><a href="#">Bluzy</a></li>
-                                                <li class="productLink"><a href="#">Swetry</a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="col-4">
-                                            <ul class="list-group">
-                                                <li style="margin-bottom:0.7rem; color:black;" class="quickSand"><b>DODATKI</b></li>
-                                                <li class="productLink"><a href="#">Buty</a></li>
-                                                <li class="productLink"><a href="#">Torebki</a></li>
-                                                <li class="productLink"><a href="#">Plecaki</a></li>
-                                                <li class="productLink"><a href="#">Paski</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="nav-item mr-1 displayMenu">
-                                    <div class="nav-link text-light Roboto menuLink">MĘŻCZYZNA</div>
-                                    <div class="row dropDownMenu">
-                                        <div class="col-4">
-                                            <ul>
-                                                <li style="margin-bottom:0.7rem; color:black;" class="quickSand"><b>UBRANIA</b></li>
-                                                <li class="productLink"><a href="#">Koszulki</a></li>
-                                                <li class="productLink"><a href="#">Polo</a></li>
-                                                <li class="productLink"><a href="#">Koszule</a></li>
-                                                <li class="productLink"><a href="#">Jeansy</a></li>
-                                                <li class="productLink"><a href="#">Szorty</a></li>
-                                                <li class="productLink"><a href="#">Bluzy</a></li>
-                                                <li class="productLink"><a href="#">Swetry</a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="col-4">
-                                            <ul class="list-group">
-                                                <li style="margin-bottom:0.7rem; color:black;" class="quickSand"><b>DODATKI</b></li>
-                                                <li class="productLink"><a href="#">Buty</a></li>
-                                                <li class="productLink"><a href="#">Plecaki</a></li>
-                                                <li class="productLink"><a href="#">Czapki</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="nav-item displayMenu">
-                                    <div class="nav-link text-light Roboto menuLink">NOWOŚCI</div>
-                                    <div class="row dropDownMenu">
-                                        <div class="col-4">
-                                            <ul>
-                                                <li style="margin-bottom:0.7rem; color:black;" class="quickSand"><b>MĘŻCZYZNA</b></li>
-                                                <li class="productLink"><a href="#">Odzież</a></li>
-                                                <li class="productLink"><a href="#">Dodatki</a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="col-4">
-                                            <ul class="list-group">
-                                                <li style="margin-bottom:0.7rem; color:black;" class="quickSand"><b>KOBIETA</b></li>
-                                                <li class="productLink"><a href="#">Odzież</a></li>
-                                                <li class="productLink"><a href="#">Dodatki</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
+                    <div class="col-12 col-lg-4 p-0 d-flex justify-content-center justify-content-lg-end justify-content-md-end justify-content-sm-end">
+                        <partial name="_LoginPartial" />
                     </div>
+                    <div class="col-12 d-flex justify-content-center p-0 ">
+                        <ul class="navbar-nav flex-grow-1 nav p-0 justify-content-center" style="background-color: #2e3036;">
+                            <li class="nav-item mr-1 pb-1 displayMenu">
+                                <div class="nav-link text-light Roboto menuLink">WYPRZEDAŻ</div>
+                                <div class="row dropDownMenu" style="color:dimgrey">
+                                    <div class="col-4">
+                                        <ul>
+                                            <li style="margin-bottom:0.7rem; color:black;" class="quickSand"><b>MĘŻCZYZNA</b></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-discount="true" asp-route-gender="mezczyzna" asp-route-type="t-shirt">Koszulki</a></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-discount="true" asp-route-gender="mezczyzna" asp-route-type="spodnie">Spodnie</a></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-discount="true" asp-route-gender="mezczyzna" asp-route-type="spodenki">Spodenki</a></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-discount="true" asp-route-gender="mezczyzna" asp-route-type="bluza">Bluzy</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-4">
+                                        <ul class="list-group">
+                                            <li style="margin-bottom:0.7rem; color:black;" class="quickSand"><b>KOBIETA</b></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-discount="true" asp-route-gender="kobieta" asp-route-type="t-shirt">Koszulki</a></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-discount="true" asp-route-gender="kobieta" asp-route-type="spodnie">Spodnie</a></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-discount="true" asp-route-gender="kobieta" asp-route-type="sukienka">Sukienki</a></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-discount="true" asp-route-gender="kobieta" asp-route-type="bluza">Bluzy</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="nav-item mr-1 displayMenu">
+                                <div class="nav-link text-light Roboto menuLink">KOBIETA</div>
+                                <div class="row dropDownMenu">
+                                    <div class="col-4">
+                                        <ul>
+                                            <li style="margin-bottom:0.7rem; color:black;" class="quickSand"><b>UBRANIA</b></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="kobieta" asp-route-type="t-shirt">Koszulki</a></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="kobieta" asp-route-type="sukienka">Sukienki</a></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="kobieta" asp-route-type="spódnica">Spódnice</a></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="kobieta" asp-route-type="koszula">Koszule</a></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="kobieta" asp-route-type="jeansy">Jeansy</a></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="kobieta" asp-route-type="bluza">Bluzy</a></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="kobieta" asp-route-type="sweter">Swetry</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-4">
+                                        <ul class="list-group">
+                                            <li style="margin-bottom:0.7rem; color:black;" class="quickSand"><b>DODATKI</b></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="kobieta" asp-route-type="buty">Buty</a></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="kobieta" asp-route-type="torebka">Torebki</a></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="kobieta" asp-route-type="plecak">Plecaki</a></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="kobieta" asp-route-type="pasek">Paski</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="nav-item mr-1 displayMenu">
+                                <div class="nav-link text-light Roboto menuLink">MĘŻCZYZNA</div>
+                                <div class="row dropDownMenu">
+                                    <div class="col-4">
+                                        <ul>
+                                            <li style="margin-bottom:0.7rem; color:black;" class="quickSand"><b>UBRANIA</b></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="mezczyzna" asp-route-type="t-shirt">Koszulki</a></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="mezczyzna" asp-route-type="polo">Polo</a></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="mezczyzna" asp-route-type="koszula">Koszule</a></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="mezczyzna" asp-route-type="jeansy">Jeansy</a></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="mezczyzna" asp-route-type="szorty">Szorty</a></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="mezczyzna" asp-route-type="bluza">Bluzy</a></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="mezczyzna" asp-route-type="sweter">Swetry</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-4">
+                                        <ul class="list-group">
+                                            <li style="margin-bottom:0.7rem; color:black;" class="quickSand"><b>DODATKI</b></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="mezczyzna" asp-route-type="buty">Buty</a></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="mezczyzna" asp-route-type="plecak">Plecaki</a></li>
+                                            <li class="productLink"><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="mezczyzna" asp-route-type="czapka">Czapki</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </nav>
     </header>

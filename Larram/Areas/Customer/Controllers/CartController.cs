@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 namespace Larram.Areas.Admin.Controllers
 {
     [Area("Customer")]
+    [Authorize]
     public class CartController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -153,11 +154,19 @@ namespace Larram.Areas.Admin.Controllers
                 };
 
                 shoppingCartViewModel.Order.OrderTotal += (item.Price * item.Quantity);
+                if(shoppingCartViewModel.ProductAvailability.Quantity < item.Quantity)
+                {
+                    TempData["message"] = "Niestety na obecną chwilę nie mamy na stanie takiej ilości produktu " + shoppingCartViewModel.ProductAvailability.Product.Name;
+/*                    ModelState.AddModelError(string.Empty, "Niestety na obecną chwilę nie mamy na stanie takiej ilości produktu "+shoppingCartViewModel.ProductAvailability.Product.Name);
+*/                    return RedirectToAction(nameof(Summary));
+                } else
+                {
+                    shoppingCartViewModel.ProductAvailability.Quantity -= item.Quantity;
+                }
                 await _unitOfWork.OrderDetails.Add(orderDetails);
                 await _unitOfWork.Save();
 
             }
-
             await _unitOfWork.ShoppingCart.RemoveRange(shoppingCartViewModel.ListCart);
             await _unitOfWork.Save();
             HttpContext.Session.SetInt32(SD.ShoppingCartSession, 0);
