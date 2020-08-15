@@ -63,6 +63,27 @@ body {
     margin-bottom: 287.750px;
     margin-top: 138px;
 }
+@media (max-width: 575px) {
+    body {
+        margin-top:53.5px;
+    }
+    .manageLinks {
+        font-size:120%;
+    }
+    .manageLinks ul li a svg {
+        font-size: 14px !important;
+    }
+    .productLinks {
+        display: none !important;
+    }
+    .menuNavi {
+        display: flex !important;
+    }
+    .centered {
+        position: relative !important;
+        font-size:280% !important;
+    }
+}
 
 .footer {
   position: absolute;
@@ -252,4 +273,8 @@ button {
 
 .imgAbout img:hover {
             opacity: 0.6;
+}
+.management a:hover div {
+    color: lightgray !important;
+    background-color: #1d2124 !important;
 }

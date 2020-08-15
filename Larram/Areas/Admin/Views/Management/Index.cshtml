@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container pt-1 pb-5 management Roboto text-light text-center" style="font-size:200%;">
+    <div class="row pt-5 pb-5">
+        @if (User.IsInRole(Larram.Utility.SD.Role_Admin))
+        {
+            <div class="col-12 col-lg-4 pt-3">
+                <a class="text-white bg-dark" asp-area="Admin" asp-controller="Category" asp-action="Index"><div class="bg-dark pt-1 pb-1" style="width: 100%; height: 100%;">Kategorie</div></a>
+            </div>
+            <div class="col-12 col-lg-4 pt-3">
+                <a class="text-white" asp-area="Admin" asp-controller="Size" asp-action="Index"><div class="bg-dark pt-1 pb-1" style="width: 100%; height: 100%;">Rozmiary</div></a>
+            </div>
+            <div class="col-12 col-lg-4 pt-3">
+                <a class="text-white bg-dark" asp-area="Admin" asp-controller="Color" asp-action="Index"><div class="bg-dark pt-1 pb-1" style="width: 100%; height: 100%;">Kolory</div></a>
+            </div>
+            <div class="col-12 col-lg-4 pt-3">
+                <a class="text-white bg-dark" asp-area="Admin" asp-controller="Product" asp-action="Index"><div class="bg-dark pt-1 pb-1" style="width: 100%; height: 100%;">Produkty</div></a>
+            </div>
+            <div class="col-12 col-lg-4 pt-3">
+                <a class="text-white bg-dark" asp-area="Admin" asp-controller="Order" asp-action="Index"><div class="bg-dark pt-1 pb-1" style="width: 100%; height: 100%;">Zamówienia</div></a>
+            </div>
+            <div class="col-12 col-lg-4 pt-3">
+                <a class="text-white bg-dark" asp-area="Admin" asp-controller="User" asp-action="Index"><div class="bg-dark pt-1 pb-1" style="width: 100%; height: 100%;">Użytkownicy</div></a>
+            </div>
+        }
+        else
+        {
+    <div class="col-12 col-lg-4 offset-lg-2 pt-3">
+        <a class="text-white bg-dark" asp-area="Admin" asp-controller="Order" asp-action="Index"><div class="bg-dark pt-1 pb-1" style="width: 100%; height: 100%;">Zamówienia</div></a>
+    </div>
+            <div class="col-12 col-lg-4 pt-3">
+                <a class="text-white bg-dark" asp-area="Admin" asp-controller="User" asp-action="Index"><div class="bg-dark pt-1 pb-1" style="width: 100%; height: 100%;">Użytkownicy</div></a>
+            </div>
+        }
+    </div>
+</div>

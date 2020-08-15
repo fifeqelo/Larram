@@ -3,65 +3,76 @@
     ViewData["Title"] = "ProductDetails";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-        <div class="container p-3 Roboto">
-            <div class="row row-cols-2">
-                <div class="col">
-                    <img src="@Model.Product.ImageUrl" class="w-100 h-100" />
-                </div>
-                <div class="col pt-5 pl-5">
-                    <div class="container">
-                        <div class="row" style="font-size:100%;">
-                            <div class="col p-3">
+        <div class="container pt-5 pb-5 Roboto">
+            <form asp-action="ProductDetails" id="myform">
+                <div class="row">
+                    <div class="col-12 col-lg-5">
+                        <div class="row">
+                            <div class="col-12">
+                                <img src="@Model.Product.ImageUrl" class="w-100" />
+                            </div>
+                            <div class="col-12 pt-3 pl-lg-3">
+                                <h5 style="overflow-wrap: break-word;
+    " class="pl-3 pl-lg-0"><b>Opis: </b>@Model.Product.Description</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-7">
+                        <div class="row pt-4 pl-3">
+                            <div class="col-12 pt-4">
                                 @Model.Product.Name
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col p-3" style="font-size:150%;">
-                                <b>@Model.Product.Price.ToString("0.00")</b>
+                            <div class="col-12 pt-1">
+                                @if (Model.Product.DiscountPrice != 0 && Model.Product.DiscountPrice < Model.Product.Price)
+                                {
+                                    <div class="row">
+                                        <div class="col-4 col-lg-3 pr-0">
+                                            <h6><b style="color:#e3291b; font-size:180%;">@Model.Product.DiscountPrice.ToString("0.00") PLN</b></h6>
+                                        </div>
+                                        <div class="col-8 pl-0">
+                                            <h6><b><s class="mb-1" style="color:#2c3e50; font-size:120%;">@Model.Product.Price.ToString("0.00") PLN</s></b></h6>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <h6><b style="color:#2c3e50; font-size:180%;">@Model.Product.Price.ToString("0.00") PLN</b></h6>
+                                }
                             </div>
-                        </div>
-                        <div class="row" style="font-size:70%;">
-                            <div class="col p-3">
-                                Kolory
+                            <div class="col-12 pt-4">
+                                <span style="font-size:80%;">Kolor</span>
                             </div>
-                        </div>
-                        <div class="row" style="height:50%;">
-                            <div class="col p-2">
+                            <div class="col-12 pt-2">
                                 @foreach (var product in Model.Products)
                                 {
                                     <a asp-area="Customer" asp-controller="Home" asp-action="ProductDetails" asp-route-id="@product.Id"><div class="d-inline p-1 pl-4 m-2 border" style="background-color:@product.HexValue"></div></a>
                                 }
                             </div>
-                        </div>
-                        <div class="row" style="font-size:70%;">
-                            <div class="col pt-4 pb-2">
-                                Rozmiar
+                            <div class="col-12 pt-4">
+                                <span style="font-size:80%;">Rozmiar</span>
                             </div>
-                        </div>
-                        <form asp-action="ProductDetails" id="myform">
-                            <div class="row">
-                                <div class="col p-2">
-                                    <select id="selectSize" name="Size" class="form-control w-50 m-2">
-                                        <option value="" disabled selected>-Wybierz rozmiar</option>
-                                        @foreach (var size in Model.ProductAvailabilities)
-                                        {
-                                            <option value="@size.SizeId">@size.Size.Name</option>
+                            <div class="col-12 pt-2">
+                                <select id="selectSize" name="Size" class="form-control w-50 m-2">
+                                    <option value="" disabled selected>-Wybierz rozmiar</option>
+                                    @foreach (var size in Model.ProductAvailabilities)
+                                    {
+                                        <option value="@size.SizeId">@size.Size.Name</option>
 
-                                        }
-                                    </select>
-                                </div>
+                                    }
+                                </select>
                             </div>
                             <label id="selectOptionValidation" class="text-danger" style="display:none;">Wybierz rozmiar.</label>
-                            <div class="row">
-                                <div class="col pt-4">
-                                    <button type="submit" class="p-3 border bg-dark text-white" style="font-size:80%;" onclick="return validateSelect()" asp-route-id="@Model.Product.Id"><i style="font-size:24px" class="mb-1" data-feather="shopping-bag"></i> DODAJ DO KOSZYKA</button>
-                                </div>
+                            <div class="col-12 pt-5 d-flex justify-content-center justify-content-lg-start">
+                                <button type="submit" class="p-3 border bg-dark text-white w-50 text-center" style="font-size:100%;" onclick="return validateSelect()" asp-route-id="@Model.Product.Id"><i style="font-size:24px" class="mb-1" data-feather="shopping-bag"></i> DODAJ DO KOSZYKA</button>
                             </div>
-                        </form>
+                        </div>
                     </div>
+
                 </div>
-            </div>
+                </form>
         </div>
+
+
 
 @section Scripts {
     <script>

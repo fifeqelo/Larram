@@ -13,13 +13,16 @@
         <nav class="navbar fixed-top navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark box-shadow p-0">
             <div class="container-fluid p-0">
                 <div class="row p-0 m-0 w-100">
-                    <div class="col-12 col-lg-8 p-0">
+                    <div class="col-2 pt-4 menuNavi" style="display:none;">
+                        <i style="font-size:22px" class="text-white" data-feather="menu"></i>
+                    </div>
+                    <div class="col-4 col-lg-8 p-0 pt-2 pt-lg-0 Brand">
                         <a class="navbar-brand redRose p-0 m-0 centered" asp-area="Customer" asp-controller="Home" asp-action="Index">LARRAM</a>
                     </div>
-                    <div class="col-12 col-lg-4 p-0 d-flex justify-content-center justify-content-lg-end justify-content-md-end justify-content-sm-end">
+                    <div class="col-6 col-lg-4 p-0 d-flex justify-content-end justify-content-lg-end justify-content-md-end justify-content-sm-end manageLinks">
                         <partial name="_LoginPartial" />
                     </div>
-                    <div class="col-12 d-flex justify-content-center p-0 ">
+                    <div class="col-12 d-flex justify-content-center p-0 productLinks">
                         <ul class="navbar-nav flex-grow-1 nav p-0 justify-content-center" style="background-color: #2e3036;">
                             <li class="nav-item mr-1 pb-1 displayMenu">
                                 <div class="nav-link text-light Roboto menuLink">WYPRZEDAŻ</div>

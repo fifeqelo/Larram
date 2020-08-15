@@ -63,10 +63,12 @@ namespace Larram.Areas.Identity.Pages.Account
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(
                 Input.Email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                "Potwiedź swój email",
+                $"Please confirm your account by < a href = '{HtmlEncoder.Default.Encode(callbackUrl)}' > clicking here </ a >.");
 
-            ModelState.AddModelError(string.Empty, "Email z linkiem aktywującym został wysłany. Sprawdź swoją skrzynkę pocztową.");
+           
+
+                 ModelState.AddModelError(string.Empty, "Email z linkiem aktywującym został wysłany. Sprawdź swoją skrzynkę pocztową.");
             return Page();
         }
     }

@@ -1,4 +1,5 @@
 ﻿@model PaginatedList<Larram.Models.ApplicationUser>
+@using Larram.Utility
 
 @{
     ViewData["Title"] = "Index";
@@ -19,9 +20,11 @@
             </form>
         </div>
         <div class="col-6 pt-2 pb-5 d-flex justify-content-end" style="font-size:60%;">
-            <a asp-area="Identity" asp-page="/Account/Register" class="p-2 pl-4 pr-4 border bg-dark text-white Roboto" style="font-size:120%;">
-                DODAJ UŻYTKOWNIKA <i style="font-size:18px" class="mb-1" data-feather="plus"></i>
-            </a>
+            @if (User.IsInRole(Larram.Utility.SD.Role_Admin)) { 
+                <a asp-area="Identity" asp-page="/Account/Register" class="p-2 pl-4 pr-4 border bg-dark text-white Roboto" style="font-size:120%;">
+                    DODAJ UŻYTKOWNIKA <i style="font-size:18px" class="mb-1" data-feather="plus"></i>
+                </a>
+            }
         </div>
         <div class="col-12">
             <div id="view-all">
