@@ -157,8 +157,7 @@ namespace Larram.Areas.Admin.Controllers
                 if(shoppingCartViewModel.ProductAvailability.Quantity < item.Quantity)
                 {
                     TempData["message"] = "Niestety na obecną chwilę nie mamy na stanie takiej ilości produktu " + shoppingCartViewModel.ProductAvailability.Product.Name;
-/*                    ModelState.AddModelError(string.Empty, "Niestety na obecną chwilę nie mamy na stanie takiej ilości produktu "+shoppingCartViewModel.ProductAvailability.Product.Name);
-*/                    return RedirectToAction(nameof(Summary));
+                    return RedirectToAction(nameof(Summary));
                 } else
                 {
                     shoppingCartViewModel.ProductAvailability.Quantity -= item.Quantity;

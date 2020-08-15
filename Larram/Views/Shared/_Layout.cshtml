@@ -14,7 +14,115 @@
             <div class="container-fluid p-0">
                 <div class="row p-0 m-0 w-100">
                     <div class="col-2 pt-4 menuNavi" style="display:none;">
-                        <i style="font-size:22px" class="text-white" data-feather="menu"></i>
+                        <i onclick="OpenSideNav()" style="font-size:22px" class="text-white" data-feather="menu"></i>
+                    </div>
+                    <div id="sideNav" class="sideNav text-white d-lg-none d-block Roboto">
+                            <i onclick="CloseSideNav()" id="sideNavClose" class="sideNavClose" style="font-size:26px" data-feather="x"></i>
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="#" class="sale-btn">WYPRZEDAŻ
+                                <span><i class="fas fa-caret-down sale"></i></span>
+                                </a>
+                                <ul class="sale-show">
+                                    <li>
+                                        <a href="#" class="sale-men-btn">
+                                            MĘŻCZYZNA
+                                            <span><i class="fas fa-caret-down sale-men"></i></span>
+                                        </a>
+                                        <ul class="sale-men-show">
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-discount="true" asp-route-gender="mezczyzna" asp-route-type="t-shirt">Koszulki</a></li>
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-discount="true" asp-route-gender="mezczyzna" asp-route-type="spodnie">Spodnie</a></li>
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-discount="true" asp-route-gender="mezczyzna" asp-route-type="spodenki">Spodenki</a></li>
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-discount="true" asp-route-gender="mezczyzna" asp-route-type="bluza">Bluzy</a></li>
+
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="sale-women-btn">KOBIETA
+                                            <span><i class="fas fa-caret-down sale-women"></i></span>
+                                        </a>
+                                        <ul class="sale-women-show">
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-discount="true" asp-route-gender="kobieta" asp-route-type="t-shirt">Koszulki</a></li>
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-discount="true" asp-route-gender="kobieta" asp-route-type="spodnie">Spodnie</a></li>
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-discount="true" asp-route-gender="kobieta" asp-route-type="sukienka">Sukienki</a></li>
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-discount="true" asp-route-gender="kobieta" asp-route-type="bluza">Bluzy</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" class="women-btn">KOBIETA
+                                    <span><i class="fas fa-caret-down women"></i></span>
+                                </a>
+                                <ul class="women-show">
+                                    <li>
+                                    <li>
+                                        <a href="#" class="women-clothes-btn">
+                                            UBRANIA
+                                            <span><i class="fas fa-caret-down women-clothes"></i></span>
+                                        </a>
+                                        <ul class="women-clothes-show">
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="kobieta" asp-route-type="t-shirt">Koszulki</a></li>
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="kobieta" asp-route-type="sukienka">Sukienki</a></li>
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="kobieta" asp-route-type="spódnica">Spódnice</a></li>
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="kobieta" asp-route-type="koszula">Koszule</a></li>
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="kobieta" asp-route-type="jeansy">Jeansy</a></li>
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="kobieta" asp-route-type="bluza">Bluzy</a></li>
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="kobieta" asp-route-type="sweter">Swetry</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                    <li>
+                                        <a href="#" class="women-addit-btn">
+                                            DODATKI
+                                            <span><i class="fas fa-caret-down women-addit"></i></span>
+                                        </a>
+                                        <ul class="women-addit-show">
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="kobieta" asp-route-type="buty">Buty</a></li>
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="kobieta" asp-route-type="torebka">Torebki</a></li>
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="kobieta" asp-route-type="plecak">Plecaki</a></li>
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="kobieta" asp-route-type="pasek">Paski</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                            <li>
+                                <a href="#" class="men-btn">MĘŻCZYZNA
+                                    <span><i class="fas fa-caret-down men"></i></span>
+                                </a>
+                                <ul class="men-show">
+                                    <li>
+                                    <li>
+                                        <a href="#" class="men-clothes-btn">
+                                            UBRANIA
+                                            <span><i class="fas fa-caret-down men-clothes"></i></span>
+                                        </a>
+                                        <ul class="men-clothes-show">
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="mezczyzna" asp-route-type="t-shirt">Koszulki</a></li>
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="mezczyzna" asp-route-type="polo">Polo</a></li>
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="mezczyzna" asp-route-type="koszula">Koszule</a></li>
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="mezczyzna" asp-route-type="jeansy">Jeansy</a></li>
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="mezczyzna" asp-route-type="szorty">Szorty</a></li>
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="mezczyzna" asp-route-type="bluza">Bluzy</a></li>
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="mezczyzna" asp-route-type="sweter">Swetry</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                    <li>
+                                        <a href="#" class="men-addit-btn">
+                                            DODATKI
+                                            <span><i class="fas fa-caret-down men-addit"></i></span>
+                                        </a>
+                                        <ul class="men-addit-show">
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="mezczyzna" asp-route-type="buty">Buty</a></li>
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="mezczyzna" asp-route-type="plecak">Plecaki</a></li>
+                                            <li><a asp-controller="Home" asp-area="Customer" asp-action="ShowProducts" asp-route-gender="mezczyzna" asp-route-type="czapka">Czapki</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
                     </div>
                     <div class="col-4 col-lg-8 p-0 pt-2 pt-lg-0 Brand">
                         <a class="navbar-brand redRose p-0 m-0 centered" asp-area="Customer" asp-controller="Home" asp-action="Index">LARRAM</a>
@@ -104,72 +212,72 @@
             </div>
         </nav>
     </header>
-        <div class="container-fluid p-0">
-            <main role="main" class="pb-3">
-                @RenderBody()
-            </main>
-        </div>
+    <div class="container-fluid p-0">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
 
-        <div class="modal" tabindex="-1" role="dialog" id="form-modal">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-                <div class="modal-content" style="border-radius:0;">
-                    <div class="modal-body p-0">
+    <div class="modal" tabindex="-1" role="dialog" id="form-modal">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content" style="border-radius:0;">
+                <div class="modal-body p-0">
 
-                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="loaderbody" id="loaderbody">
-            <div class="loader"></div>
-        </div>
+    <div class="loaderbody" id="loaderbody">
+        <div class="loader"></div>
+    </div>
 
-        <footer class="border-top w-100 footer pt-4 text-muted" style="line-height: 20px; background-color: lightgray;">
-            <div class="container">
-                <div class="row">
-                    <div class="col">
-                        <ul class="footer-list">
-                            <li><h5 class="Roboto text-dark"><b>PRZEWODNIK PO ZAKUPACH</b></h5></li>
-                            <li class="footer-list-element Roboto"><a href="#">FAQ - NAJCZĘŚCIEJ ZADAWANE PYTANIA</a></li>
-                            <li class="footer-list-element Roboto"><a href="#">JAK KUPOWAĆ</a></li>
-                            <li class="footer-list-element Roboto"><a href="#">REKLAMACJE I ZWROTY</a></li>
-                            <li class="footer-list-element Roboto"><a href="#">WYSYŁKA I PŁATNOŚĆ</a></li>
-                        </ul>
-                    </div>
-                    <div class="col">
-                        <ul class="footer-list">
-                            <li><h5 class="Roboto text-dark"><b>REGULAMINY</b></h5></li>
-                            <li class="footer-list-element Roboto"><a href="#">REGULAMIN</a></li>
-                            <li class="footer-list-element Roboto"><a href="#">POLITYKA PRYWATNOŚCI</a></li>
-                        </ul>
-                    </div>
-                    <div class="col">
-                        <ul class="footer-list">
-                            <li><h5 class="Roboto text-dark"><b>KONTAKT</b></h5></li>
-                            <li class="footer-list-element Roboto"><a href="#">NAPISZ DO NAS</a></li>
-                        </ul>
-                    </div>
-                    <div class="col">
-                        <ul class="footer-list text-center">
-                            <li><h5 class="Roboto text-dark" style="padding:0.1rem"><b>SOCIAL MEDIA</b></h5></li>
-                            <li class="social-media-footer"><a href="#"><i style="font-size:26px" data-feather="facebook"></i></a></li>
-                            <li class="social-media-footer"><a href="#"><i style="font-size:26px" data-feather="instagram"></i></a></li>
-                            <li class="social-media-footer"><a href="#"><i style="font-size:26px" data-feather="twitter"></i></a></li>
-                        </ul>
-                    </div>
+    <footer class="border-top w-100 footer pt-4 text-muted" style="line-height: 20px; background-color: lightgray;">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <ul class="footer-list">
+                        <li><h5 class="Roboto text-dark"><b>PRZEWODNIK PO ZAKUPACH</b></h5></li>
+                        <li class="footer-list-element Roboto"><a href="#">FAQ - NAJCZĘŚCIEJ ZADAWANE PYTANIA</a></li>
+                        <li class="footer-list-element Roboto"><a href="#">JAK KUPOWAĆ</a></li>
+                        <li class="footer-list-element Roboto"><a href="#">REKLAMACJE I ZWROTY</a></li>
+                        <li class="footer-list-element Roboto"><a href="#">WYSYŁKA I PŁATNOŚĆ</a></li>
+                    </ul>
                 </div>
-                <br />
-                <br />
-                <div class="row text-center">
-                    <div class="col-12">
-                        <small class="redRose" style="font-size:70%;">* Grafiki produktów pochodzą ze strony H&M</small>
-                    </div>
-                    <div class="col-12">
-                        <h4 class="redRose" style="font-size:120%;">LARRAM</h4>
-                    </div>
+                <div class="col">
+                    <ul class="footer-list">
+                        <li><h5 class="Roboto text-dark"><b>REGULAMINY</b></h5></li>
+                        <li class="footer-list-element Roboto"><a href="#">REGULAMIN</a></li>
+                        <li class="footer-list-element Roboto"><a href="#">POLITYKA PRYWATNOŚCI</a></li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <ul class="footer-list">
+                        <li><h5 class="Roboto text-dark"><b>KONTAKT</b></h5></li>
+                        <li class="footer-list-element Roboto"><a href="#">NAPISZ DO NAS</a></li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <ul class="footer-list text-center">
+                        <li><h5 class="Roboto text-dark" style="padding:0.1rem"><b>SOCIAL MEDIA</b></h5></li>
+                        <li class="social-media-footer"><a href="#"><i style="font-size:26px" data-feather="facebook"></i></a></li>
+                        <li class="social-media-footer"><a href="#"><i style="font-size:26px" data-feather="instagram"></i></a></li>
+                        <li class="social-media-footer"><a href="#"><i style="font-size:26px" data-feather="twitter"></i></a></li>
+                    </ul>
                 </div>
             </div>
-        </footer>
+            <br />
+            <br />
+            <div class="row text-center">
+                <div class="col-12">
+                    <small class="redRose" style="font-size:70%;">* Grafiki produktów pochodzą ze strony H&M</small>
+                </div>
+                <div class="col-12">
+                    <h4 class="redRose" style="font-size:120%;">LARRAM</h4>
+                </div>
+            </div>
+        </div>
+    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/4eeb01117f.js" crossorigin="anonymous"></script>
@@ -181,3 +289,6 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+    <script>
+
+    </script>

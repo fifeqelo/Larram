@@ -51,3 +51,53 @@ $(function () {
         $("#loaderbody").addClass('hide');
     });
 });
+
+function OpenSideNav() {
+    document.getElementById("sideNav").style.width = "100%";
+}
+function CloseSideNav() {
+    document.getElementById("sideNav").style.width = "0";
+}
+$('.sale-btn').click(function () {
+    $('.sideNav ul .sale-show').toggleClass('show');
+    $('.sideNav ul .sale').toggleClass('rotate');
+
+})
+$('.sale-men-btn').click(function () {
+    $('.sideNav ul li ul .sale-men-show').toggleClass('show');
+    $('.sideNav ul li ul .sale-men').toggleClass('rotate');
+
+})
+$('.sale-women-btn').click(function () {
+    $('.sideNav ul li ul .sale-women-show').toggleClass('show');
+    $('.sideNav ul li ul .sale-women').toggleClass('rotate');
+
+})
+$('.women-btn').click(function () {
+    $('.sideNav ul .women-show').toggleClass('show');
+    $('.sideNav ul .women').toggleClass('rotate');
+})
+$('.women-clothes-btn').click(function () {
+    $('.sideNav ul li ul .women-clothes-show').toggleClass('show');
+    $('.sideNav ul li ul .women-clothes').toggleClass('rotate');
+
+})
+$('.women-addit-btn').click(function () {
+    $('.sideNav ul li ul .women-addit-show').toggleClass('show');
+    $('.sideNav ul li ul .women-addit').toggleClass('rotate');
+
+})
+$('.men-btn').click(function () {
+    $('.sideNav ul .men-show').toggleClass('show');
+    $('.sideNav ul .men').toggleClass('rotate');
+})
+$('.men-clothes-btn').click(function () {
+    $('.sideNav ul li ul .men-clothes-show').toggleClass('show');
+    $('.sideNav ul li ul .men-clothes').toggleClass('rotate');
+
+})
+$('.men-addit-btn').click(function () {
+    $('.sideNav ul li ul .men-addit-show').toggleClass('show');
+    $('.sideNav ul li ul .men-addit').toggleClass('rotate');
+
+})

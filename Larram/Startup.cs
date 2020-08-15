@@ -17,6 +17,8 @@ using Larram.DataAccess.Repository;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Larram.Utility;
 using Microsoft.Extensions.Options;
+using Larram.DataAccess.Initalizer;
+using Larram.DataAccess.Initializer;
 
 namespace Larram
 {
@@ -38,6 +40,7 @@ namespace Larram
             services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IDbInitializer, DbInitializer>();
             services.AddTransient<IEmailSender, EmailSender>(i =>
                 new EmailSender(
                 Configuration["EmailSender:Host"],
@@ -77,7 +80,7 @@ namespace Larram
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDbInitializer dbInitializer)
         {
             if (env.IsDevelopment())
             {
@@ -100,7 +103,7 @@ namespace Larram
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+            dbInitializer.Initialize();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
