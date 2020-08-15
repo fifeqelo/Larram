@@ -79,7 +79,7 @@
                 <h1 class="m-0 text-left pl-1" style="font-size:80%; width:80%;"><b>Zdjęcie </b></h1>
             </div>
             <div class="col-12 d-flex justify-content-center">
-                <input type="file" style="width:80%; content:'test';" id="uploadBox" multiple class="form-control" />
+                <input type="file" name="files" id="uploadBox" multiple class="form-control" />
             </div>
             <input type="hidden" asp-for="Product.CreatedDate" value="@DateTime.Now" />
             <div class="col-12 p-1 d-flex justify-content-center">

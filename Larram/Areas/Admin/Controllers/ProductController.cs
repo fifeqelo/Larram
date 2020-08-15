@@ -4,6 +4,7 @@ using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Larram.DataAccess.Data;
 using Larram.DataAccess.Repository.IRepository;
@@ -183,9 +184,9 @@ namespace Larram.Areas.Admin.Controllers
                 string webRootPath = _hostEnviroment.WebRootPath;
                 var files = HttpContext.Request.Form.Files;
                 if (files.Count > 0)
-                {
+                { 
                     string fileName = Guid.NewGuid().ToString();
-                    var uploads = Path.Combine(webRootPath, @"images/products");
+                    var uploads = Path.Combine(webRootPath, @"images\products");
                     var extenstion = Path.GetExtension(files[0].FileName);
 
                     if (productViewModel.Product.ImageUrl != null)
