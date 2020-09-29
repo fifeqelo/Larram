@@ -63,13 +63,13 @@ namespace Larram
                 options.SlidingExpiration = true;
             });
             services.AddAuthentication().AddFacebook(options => {
-                options.AppId = "341325690589129";
-                options.AppSecret = "aa5bb7097dfb1c4dd48490e98cec0aa8";
+                options.AppId = "";
+                options.AppSecret = "";
             });
             services.AddAuthentication().AddGoogle(options =>
             {
-                options.ClientId = "540093190960-jn3apgr8df415dkfkvp47c6ge381cefn.apps.googleusercontent.com";
-                options.ClientSecret = "Q1Zrp_Vcc_Uq2h-8JuBTR9cE";
+                options.ClientId = "";
+                options.ClientSecret = "";
             });
             services.AddSession(options =>
             {
